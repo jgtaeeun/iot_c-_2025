@@ -1,12 +1,54 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Source\\iot_c-_2025\\day31\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1A693D33-A1D4-4418-9625-CD26043C9699}|day31.vcxproj|C:\\Source\\iot_c-_2025\\day31\\account2.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1A693D33-A1D4-4418-9625-CD26043C9699}|day31.vcxproj|solutionrelative:account2.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A693D33-A1D4-4418-9625-CD26043C9699}|day31.vcxproj|C:\\Source\\iot_c-_2025\\day31\\account.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1A693D33-A1D4-4418-9625-CD26043C9699}|day31.vcxproj|solutionrelative:account.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "account2.cpp",
+              "DocumentMoniker": "C:\\Source\\iot_c-_2025\\day31\\account2.cpp",
+              "RelativeDocumentMoniker": "account2.cpp",
+              "ToolTip": "C:\\Source\\iot_c-_2025\\day31\\account2.cpp",
+              "RelativeToolTip": "account2.cpp",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAcwF4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-18T08:12:14.731Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "account.cpp",
+              "DocumentMoniker": "C:\\Source\\iot_c-_2025\\day31\\account.cpp",
+              "RelativeDocumentMoniker": "account.cpp",
+              "ToolTip": "C:\\Source\\iot_c-_2025\\day31\\account.cpp",
+              "RelativeToolTip": "account.cpp",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAcwEwAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-18T06:09:16.438Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

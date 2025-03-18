@@ -127,6 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="account.cpp" />
+    <ClCompile Include="account2.cpp" />
     <ClCompile Include="cin.cpp" />
     <ClCompile Include="cin2.cpp" />
     <ClCompile Include="cout.cpp" />
@@ -137,11 +139,25 @@
     <ClCompile Include="hello.cpp" />
     <ClCompile Include="matrix2d.c" />
     <ClCompile Include="namespace.cpp" />
+    <ClCompile Include="new.cpp" />
+    <ClCompile Include="new1.cpp" />
+    <ClCompile Include="new2.cpp" />
+    <ClCompile Include="new3.cpp" />
     <ClCompile Include="overloading.cpp" />
     <ClCompile Include="practice1.cpp" />
     <ClCompile Include="practice2.cpp" />
+    <ClCompile Include="ref.cpp" />
+    <ClCompile Include="ref2.cpp" />
+    <ClCompile Include="ref3.cpp" />
+    <ClCompile Include="ref4.cpp" />
+    <ClCompile Include="ref5.cpp" />
+    <ClCompile Include="ref6.cpp" />
+    <ClCompile Include="ref7.cpp" />
     <ClCompile Include="scope.cpp" />
     <ClCompile Include="scope2.cpp" />
+    <ClCompile Include="struct_c++.cpp" />
+    <ClCompile Include="struct_c++2.cpp" />
+    <ClCompile Include="struct_c.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scope.h" />

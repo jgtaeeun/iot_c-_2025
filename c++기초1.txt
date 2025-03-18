@@ -1,0 +1,153 @@
+0. 값을 바꾸는 것이 목표인 경우, 포인터를 이용해 간접참조연산을 통해 swap한다.
+void swap(int * a, int * b) {
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}
+int a =10 , b=20;
+swap(&a, &b);
+
+0. 포인터변수 -하나의 메모리만 처리
+  포인터배열 -여러 개의 메모리를 처리
+
+1. 입출력
+#include <iostream>
+using namespace std;
+int main(void){
+	int num=20;
+	std::cout << "hello" <<" world" <<std::endl;  //개행문자 있음
+	cout <<num;   //개행문자 없음
+	return 0;
+}
+
+2.  함수오버로딩 
+-동일한 함수명, 다른 매개변수(값, 개수)
+-c++에서는 함수명, 매개변수(값,개수)가 같아야 동일한 함수로 인식하며, 이들은 함수오버로딩할 수 없다.
+
+int func(){
+	return 10;
+}
+int func(char c){
+	return c;   //아스키코드 변환
+}
+
+//불가 char func(){
+//		return 'a';
+//	}
+
+3. 매개변수 디폴트 값
+- ★디폴트 값은 함수선언 부분에만 표현한다.
+- DEFAULT값은 오른쪽부터 채운다.
+int func() {
+	return 10;
+}
+int func(int a = 10){
+	return a;
+}
+//위의 함수는 동시에 존재할 수 없다.
+
+
+int func2(int a , int b=0);
+
+int main(){
+	int res = func(); #에러난다. ,E0308
+	return 0;
+
+}
+
+int func2(int a , int b){
+	return a+b;
+}
+
+
+4. namespace
+4-1.using namespace std;
+
+int main(){
+	cout<<"namespace로 std를 선언했기에 std::생략가능" <<endl;
+	return 0;
+}
+
+4-2. 범위지정 연산자 - 전역변수
+int val = 100; //전역변수
+int main(void){
+	int val = 20; //지역변수
+	val += 3; //지역변수+3
+	::val +=3; //전역변수+3
+	return 0;
+}
+
+4-3. 범위지정연산자 (범위scope)- 클래스 호출
+   class A{
+            int a;
+        public :
+            A(int aa);
+            void AInfo();
+   };
+
+     
+        #include <iostream>
+        #include "scope.h"
+
+        A::A(int aa) {					//std::cout<< 형태와 동일
+            a = aa;
+        }
+        void A::AInfo() {
+            std::cout << "a: " << a << std::endl;
+        }
+        int main(void) {
+
+            A a=10 ; //A a(10);
+            a.AInfo();
+            return 0;
+        }
+
+5. 동적할당 new, delete
+5.1 int변수
+int *p = new int;
+delete p;
+
+5.2 int배열
+int *p = new int[5];
+p[0]=1;
+*(p+1)=2;
+delete[] p;
+
+5.3. new는 생성자를 호출하기에 초기화 할 수 있다.
+int *p = new int[5]{1,2,3,4,5};
+delete[] p;
+
+*생성자-객체생성, 초기화
+
+5.4 구조체
+typedef struct human{
+	char name[100];
+	int age;
+	
+	void printf_h() {
+		std::cout<<"name: " <<name<<std::endl;
+		std::cout<<" age: " << age<<std::endl;
+	}
+}Human;
+
+int main(){
+	Human h = {"김철수",30}
+	return 0;
+}
+
+
+
+5.5 참조자 &
+- 자신이 참조하는 변수를 대신할 수 있는 또 하나의 이름
+- 자신이 참조하는 변수와 동일한 메모리 공간을 가진다
+- 참조자 선언과 동시에 초기화
+- lvalue를 참조하여야함 + const 상수 참조자
+
+int num=10;
+int& ref = num;
+
+- 함수출력값에 따른 경우
+	- 출력이 상수일 경우
+	자료형 변수명 , const 자료형&변수명 (상수참조자)
+	- 출력이 참조자일 경우
+	 자료형 변수명, 자료형&변수명 (참조자)
