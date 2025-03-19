@@ -102,5 +102,17 @@
     <ClCompile Include="Human.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="prac_struct.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="prac_class.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="prac_class2.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="prac_class2_copy.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -143,6 +143,9 @@
     <ClCompile Include="MyClass2.cpp" />
     <ClCompile Include="MyClass3.cpp" />
     <ClCompile Include="MyClass3copy.cpp" />
+    <ClCompile Include="prac_class.cpp" />
+    <ClCompile Include="prac_class2.cpp" />
+    <ClCompile Include="prac_class2_copy.cpp" />
     <ClCompile Include="prac_newdelete1.cpp" />
     <ClCompile Include="prac_newdelete2.cpp" />
     <ClCompile Include="prac_newdelete3.cpp" />
@@ -154,6 +157,7 @@
     <ClCompile Include="prac_ref6.cpp" />
     <ClCompile Include="prac_ref7.cpp" />
     <ClCompile Include="prac_ref7_copy.cpp" />
+    <ClCompile Include="prac_struct.cpp" />
     <ClCompile Include="ref_init.cpp" />
     <ClCompile Include="문자열처리하기.cpp" />
   </ItemGroup>

@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Source\\iot_c-_2025\\day32\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|C:\\Source\\iot_c-_2025\\day32\\test.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|solutionrelative:test.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|C:\\Source\\iot_c-_2025\\day32\\prac_class2_copy.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|solutionrelative:prac_class2_copy.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|C:\\Source\\iot_c-_2025\\day32\\\uBB38\uC790\uC5F4\uCC98\uB9AC\uD558\uAE30.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|solutionrelative:\uBB38\uC790\uC5F4\uCC98\uB9AC\uD558\uAE30.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|C:\\Source\\iot_c-_2025\\day32\\prac_class2.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|solutionrelative:prac_class2.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,27 +23,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "test.cpp",
-              "DocumentMoniker": "C:\\Source\\iot_c-_2025\\day32\\test.cpp",
-              "RelativeDocumentMoniker": "test.cpp",
-              "ToolTip": "C:\\Source\\iot_c-_2025\\day32\\test.cpp",
-              "RelativeToolTip": "test.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "prac_class2_copy.cpp",
+              "DocumentMoniker": "C:\\Source\\iot_c-_2025\\day32\\prac_class2_copy.cpp",
+              "RelativeDocumentMoniker": "prac_class2_copy.cpp",
+              "ToolTip": "C:\\Source\\iot_c-_2025\\day32\\prac_class2_copy.cpp",
+              "RelativeToolTip": "prac_class2_copy.cpp",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABQAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-19T08:13:35.162Z",
+              "WhenOpened": "2025-03-19T09:11:05.988Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "\uBB38\uC790\uC5F4\uCC98\uB9AC\uD558\uAE30.cpp",
-              "DocumentMoniker": "C:\\Source\\iot_c-_2025\\day32\\\uBB38\uC790\uC5F4\uCC98\uB9AC\uD558\uAE30.cpp",
-              "RelativeDocumentMoniker": "\uBB38\uC790\uC5F4\uCC98\uB9AC\uD558\uAE30.cpp",
-              "ToolTip": "C:\\Source\\iot_c-_2025\\day32\\\uBB38\uC790\uC5F4\uCC98\uB9AC\uD558\uAE30.cpp",
-              "RelativeToolTip": "\uBB38\uC790\uC5F4\uCC98\uB9AC\uD558\uAE30.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABKAAAAAAAAAA==",
+              "Title": "prac_class2.cpp",
+              "DocumentMoniker": "C:\\Source\\iot_c-_2025\\day32\\prac_class2.cpp",
+              "RelativeDocumentMoniker": "prac_class2.cpp",
+              "ToolTip": "C:\\Source\\iot_c-_2025\\day32\\prac_class2.cpp",
+              "RelativeToolTip": "prac_class2.cpp",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAowBwAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-19T08:01:10.49Z",
+              "WhenOpened": "2025-03-19T09:04:09.109Z",
               "EditorCaption": ""
             }
           ]
