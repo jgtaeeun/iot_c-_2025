@@ -5,10 +5,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|C:\\Source\\iot_c-_2025\\day32\\prac_class2_copy.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|solutionrelative:prac_class2_copy.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|C:\\Source\\iot_c-_2025\\day32\\prac_class2.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|solutionrelative:prac_class2.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -28,22 +24,9 @@
               "RelativeDocumentMoniker": "prac_class2_copy.cpp",
               "ToolTip": "C:\\Source\\iot_c-_2025\\day32\\prac_class2_copy.cpp",
               "RelativeToolTip": "prac_class2_copy.cpp",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABQAAAAPAAAAAAAAAA==",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAcwBkAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-03-19T09:11:05.988Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "prac_class2.cpp",
-              "DocumentMoniker": "C:\\Source\\iot_c-_2025\\day32\\prac_class2.cpp",
-              "RelativeDocumentMoniker": "prac_class2.cpp",
-              "ToolTip": "C:\\Source\\iot_c-_2025\\day32\\prac_class2.cpp",
-              "RelativeToolTip": "prac_class2.cpp",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAowBwAAAADAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-19T09:04:09.109Z",
               "EditorCaption": ""
             }
           ]
