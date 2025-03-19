@@ -4,9 +4,19 @@ C:\Source\iot_c-_2025\day32\callbyvalue.cpp;C:\Source\iot_c-_2025\day32\day32\x6
 C:\Source\iot_c-_2025\day32\class.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\class.obj
 C:\Source\iot_c-_2025\day32\class2.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\class2.obj
 C:\Source\iot_c-_2025\day32\class3.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\class3.obj
+C:\Source\iot_c-_2025\day32\Human.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\Human.obj
+C:\Source\iot_c-_2025\day32\init.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\init.obj
+C:\Source\iot_c-_2025\day32\init2.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\init2.obj
+C:\Source\iot_c-_2025\day32\init3.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\init3.obj
+C:\Source\iot_c-_2025\day32\init4.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\init4.obj
+C:\Source\iot_c-_2025\day32\init5.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\init5.obj
 C:\Source\iot_c-_2025\day32\MyClass.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\MyClass.obj
 C:\Source\iot_c-_2025\day32\MyClass2.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\MyClass2.obj
 C:\Source\iot_c-_2025\day32\MyClass3.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\MyClass3.obj
+C:\Source\iot_c-_2025\day32\MyClass3copy.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\MyClass3copy.obj
+C:\Source\iot_c-_2025\day32\prac_newdelete1.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\prac_newdelete1.obj
+C:\Source\iot_c-_2025\day32\prac_newdelete2.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\prac_newdelete2.obj
+C:\Source\iot_c-_2025\day32\prac_newdelete3.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\prac_newdelete3.obj
 C:\Source\iot_c-_2025\day32\prac_ref1.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\prac_ref1.obj
 C:\Source\iot_c-_2025\day32\prac_ref2.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\prac_ref2.obj
 C:\Source\iot_c-_2025\day32\prac_ref3.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\prac_ref3.obj
@@ -14,3 +24,7 @@ C:\Source\iot_c-_2025\day32\prac_ref4.cpp;C:\Source\iot_c-_2025\day32\day32\x64\
 C:\Source\iot_c-_2025\day32\prac_ref5.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\prac_ref5.obj
 C:\Source\iot_c-_2025\day32\prac_ref6.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\prac_ref6.obj
 C:\Source\iot_c-_2025\day32\prac_ref7.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\prac_ref7.obj
+C:\Source\iot_c-_2025\day32\prac_ref7_copy.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\prac_ref7_copy.obj
+C:\Source\iot_c-_2025\day32\ref_init.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\ref_init.obj
+C:\Source\iot_c-_2025\day32\test.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\test.obj
+C:\Source\iot_c-_2025\day32\문자열처리하기.cpp;C:\Source\iot_c-_2025\day32\day32\x64\Debug\문자열처리하기.obj

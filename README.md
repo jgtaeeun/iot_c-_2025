@@ -424,6 +424,7 @@ c++
     - 반환형이 참조형인 경우 , 참조자변수일때 [C++](./day32/prac_ref4.cpp), 변수일때 [C++](./day32/prac_ref3.cpp)
     - 함수 내 지역변수를 참조자로 반환할 경우, 지역변수는 함수종료 후 소멸되기에 쓰레기값이다. [C++](./day32/prac_ref5.cpp)
     - const포인터와 const참조자 [C++](./day32/prac_ref7.cpp)
+        - ref는 포인터 p를 참조하므로 ref와 p의 주소는 동일하다. =>*p == *ref
         ```C++
         #include <iostream>
 
@@ -432,14 +433,59 @@ c++
             const int num = 12; //상수이므로 직접 변경 불가능, 포인터 변수나 참조자로 값 변경해야함
             const int* p = &num;   //데이터상수 (주소변경가능, 값변경 불가)
             
-            const int& ref = *p;  //상수참조자
-
+            const int* (&ref) = p;  
             std::cout << "포인터 변수 p가 가리키는 값: " << *p << std::endl;
-            std::cout << "참조자 ref: " << ref << std::endl;
+            std::cout << "참조자 ref: " << *ref << std::endl;
 
             return 0;
         }
         ```
+- 동적할당 + 참조자 실습 [c++](./day32/prac_newdelete2.cpp)
+    - 동적할당은 포인터 변수
+    - 포인터변수의 값을 참조
+    ```c++
+    Point &ref = *p;
+    //p가 가리키는 값 = ref
+    //p의 주소 = ref의 주소
+
+    //p의 동적할당해제 = ref의 주소의 동적할당 해제
+
+    ```
+    ```c++
+    #include <iostream>
+    typedef struct __Point {
+        int x;
+        int y;
+    } Point;
+    
+    Point& PntAdder(const Point& p1, const Point& p2) {
+        Point* p  = new Point;
+        p->x = p1.x + p2.x;
+        p->y = p1.y + p2.y;
+        return *p ;
+    }
+
+    int main(void) {
+        Point* p = new Point;
+        Point* q = new Point;
+    
+        (*p).x = 1;
+        (*p).y = 2;
+        (*q).x = 3;
+        (*q).y = 4;
+    
+        Point& ref = PntAdder(*p, *q);  // PntAdder 함수에서 참조 반환
+        std::cout << "두 점의 합(x, y): " << ref.x << " " << ref.y << std::endl;
+    
+        // 동적 할당 해제
+        delete p;
+        delete q;
+        delete &ref; 
+        return 0;
+    }
+
+    ```
+- **문자열처리하기 -strcpy()**[C++](./day32/문자열처리하기.cpp)
 - 03-2 클래스와 객체
     - 객체와 인스턴스
     - 인스턴스 -어떤 클래스로부터 만들어진 객체
@@ -471,6 +517,8 @@ c++
         int main(void) {
 
         AClass b; //디폴트 생성자
+        AClass b2 =  AClass(); //디폴트 생성자
+        //AClass b3(); //함수원형과 헷갈리기에 에러난다.
         //AClass b(200, 400); //입력이 2개인 생성자는 정의되어있지 않다. 에러(E0289)
         return 0;
         }
@@ -534,7 +582,7 @@ c++
         - 매개변수는 void형으로 선언되어야 하기에 오버로딩도, 디폴트 값 설정도 불가능하다.
         - 직접 소멸자를 정의하지 않으면, 디폴트생성자와 마찬가지로 아무런 일도 하지 않는 디폴트 소멸자가 자동으로 삽입된다.
         - 소멸자는 대개 생성자에서 할당한 리소스의 소멸에 사용된다.(delete연산자 이용)
-
+        - `동적할당 경우 말고는 별도로 작성할 필요가 없다. 동적해제를 소멸자 함수에서 한다.`
     - 클래스 실습
         - 멤버변수가 str일 때, set함수로 [c++](./day32/MyClass.cpp)
         - 멤버변수 str일 때, 생성자로  [c++](./day32/MyClass2.cpp)
@@ -542,17 +590,174 @@ c++
         - ` C++에서 생성자에서 배열의 주소를 포인터로 받을 때 const를 사용하는 이유:  배열의 값이 변경되지 않도록 보호/ const를 사용하면 해당 포인터가 가리키는 메모리의 값을 수정할 수 없게 됩니다. `
         - `strlen(배열이름)은 배열의 첫 번째 요소의 주소를 반환하는 포인터를 사용하여 문자열의 길이를 구합니다`
         - `동적 메모리 할당을 통해 포인터가 문자열을 가리키는 경우에도 strlen(포인터)를 사용하여 문자열의 길이를 계산할 수 있습니다.`
+            ```c++
+            MyClass(int i_id, const char* i_name, int i_age){   // const 포인터변수인 이유는 데이터상수 목적으로 (값변경 불가)
+                id = i_id;
+
+                //std::cout << strlen(i_name) << std::endl;
+                name = new char[strlen(i_name)+1];  // 포인터변수=배열이름=배열의 첫번째주소 =>str(배열이름)   
+                                                    // 동적 메모리 할당 시 +1을 하는 이유는 널 종료 문자(null terminator, '\0')를 저장하기 위해서입니다.
+                strcpy(name, i_name);
+
+
+
+                age = i_age;
+            }
+            ```
+        - 범위지정:: , const , mutable  [c++](./day32/MyClass3copy.cpp)
+            - `클래스밖에서 멤버함수 정의할 때, 범위지정::`
+            - printData()함수는 출력만 하는 역할이니 값변경 하면 안 되므로 const
+            - mutable 
+            ```c++
+            #define _CRT_SECURE_NO_WARNINGS
+            #include <iostream>
+
+            class MyClass {
+
+            private:
+                int id;
+                char* name;
+                mutable int age;
+
+            public:
+                MyClass() {}
+
+                MyClass(int i_id, const char* i_name, int i_age);
+
+                void printData () const;
+
+                ~MyClass() {
+
+                    delete[] name;
+                }
+            };
+
+            int main(void) {
+
+                MyClass m(5, "오수아", 32);
+                m.printData();
+
+                return 0;
+
+            }
+
+
+            MyClass::MyClass(int i_id, const char* i_name, int i_age) {  
+                id = i_id;
+
+                name = new char[strlen(i_name) + 1];  
+                strcpy(name, i_name);
+
+                age = i_age;
+            }
+
+            void MyClass:: printData() const{           //상수 멤버함수(모든 멤버들을 상수화 시킨다.)
+                std::cout << "MyClass의 인스턴스입니다.";
+                std::cout << "아이디: " << id << " 이름 :" << name << " 나이: " << age << std::endl;
+               //id = 2;   //상수함수라서 id, name, age는 상수이기에 lvaule가 될 수 없다.
+                age = 25;  //상수함수라서 age도 상수여야하지만 클래스 멤버변수에서 mutable을 통해 상수화를 막기에 lvalue가 변수라서 될 수 있다.
+            }
+            ```
+        
+- 초기화
+    - **상수와 참조자는 선언과 동시에 초기화가 되어야한다.**
+    - 초기화 유형
         ```c++
-        MyClass(int i_id, const char* i_name, int i_age){   // const 포인터변수인 이유는 데이터상수 목적으로 (값변경 불가)
-            id = i_id;
+        #include <iostream>
 
-            //std::cout << strlen(i_name) << std::endl;
-            name = new char[strlen(i_name)+1];  // 포인터변수=배열이름=배열의 첫번째주소 =>str(배열이름)   
-                                                // 동적 메모리 할당 시 +1을 하는 이유는 널 종료 문자(null terminator, '\0')를 저장하기 위해서입니다.
-            strcpy(name, i_name);
+        int main(void) {
+
+            int num = 3;	// 복사초기하
+            int num2(30);	//직접 초기화
+            int num3{ 300 }; //중괄호 직접 초기화
+            int num4 = { 3000 }; //중괄호 복사초기화
+
+            int x = 3.14;
+            int x1{3.14};		//double에서 int로의 변환에는 축소변환필요하다. 오류C2397
+
+            std::cout << num << std::endl;
+            std::cout << num2 << std::endl;
+            std::cout << num3 << std::endl;
+            std::cout << num4 << std::endl;
+            std::cout << x << std::endl;     //3
 
 
+            return 0;
+        }
+        ```
+    - **이니셜라이져, 콜론 초기화 - 생성자 함수 머리에서 : 초기화**
+        1. `상수 멤버변수를 가질 경우, 콜론 초기화`
+        ```c++
+        class ConstClass {
 
-            age = i_age;
+        private:
+            int m_value;
+            const int m_value2;   //상수멤버변수는 객체생성되기 전에 반드시 초기화가 되어야 함.
+
+        public:
+            ConstClass(int value, int value2) :m_value2(value2) { 
+                m_value = value; /*m_value2 = value2;*/     //lvalue는 상수가 될 수 없다.
+            } 
+
+        };
+        ```
+        2. `참조자 reference 경우, 콜론 초기화`
+        ```c++
+        class RefClass {
+
+        private:
+            int& ref;
+
+        public :
+            RefClass(int& r) :ref(r) { }      //참조자 역시 객체가 생성되기 전에 반드시 초기화가 되어야 함.
+            void showValue() {
+                printf("참조자ref:%d", ref);
+            }
+        };
+            int main(void) {
+                int n = 50;
+                RefClass obj(n);
+                obj.showValue();
+                return 0;
+        }
+        ```
+        3. `멤버변수가 객체(class)인 경우, 콜론 초기화`
+        ```c++
+        #include <iostream>
+
+        class Position {
+
+        private:
+            int m_x;
+            int m_y;
+
+        public:
+            Position(int x, int y) { 
+                printf("position객체 생성\n");
+                m_x = x;
+                m_y = y;
+            }
+            
+            void getData() {
+                printf("(x,y)=(%d,%d)\n", m_x, m_y);
+            }
+        };
+
+        class ObjClass {
+        private:
+            Position pos;		//객체 멤버변수
+
+        public :
+            ObjClass(int x, int y) : pos(x, y) { printf("ObjClass객체 생성\n"); }   //ObjClass가 생성되기 전에 멤버변수로 Position객체가 생성되어야 한다. 
+            void showValue() {
+                pos.getData();
+            }
+        };
+
+        int main(void) {
+
+            ObjClass o(3,6);
+            o.showValue();
+            return 0;
         }
         ```

@@ -12,6 +12,8 @@
 //	int age;
 //
 //public :
+//	MyClass() {}
+//
 //	MyClass(int i_id, const char* i_name, int i_age){   // const 포인터변수인 이유는 데이터상수 목적으로 (값변경 불가)
 //		id = i_id;
 //
@@ -23,13 +25,13 @@
 //		strcpy(name, i_name);
 //		age = i_age;
 //	}
-//
+//	
 //	void printData(){
 //		std::cout << "MyClass의 인스턴스입니다.";
 //		std::cout << "아이디: " << id << " 이름 :" << name << " 나이: " << age << std::endl;
 //		
 //	}
-//	//소멸자에서 동적해제
+//	//소멸자(자동호출된다.)- 동적할당경우 말고는 별도로 작성할 필요가 없다.
 //	~MyClass(){
 //		
 //		delete[] name;

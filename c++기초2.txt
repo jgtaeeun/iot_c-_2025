@@ -1,4 +1,26 @@
-0. 동적할당 및 해제 new, delete
+0. 
+0-1.동적할당 및 해제 new, delete
+  
+0-2.참조자- 선언과 동시에 초기화 되어야 함./지역변수 참조자 반환할 경우, 함수종료시 지역변수 소멸되어 쓰레기값을 참조자가 가진다.
+ int a =10;
+ int *p = &a;
+ int (&ref) = *p;   // ref는 p가 가리키는 값,   &ref 는 p 
+
+0-3. 문자열 처리
+char str[100]="abcd";
+std::cout<< str ;
+
+char str2[100];
+//str2 = "abcd" ; 에러난다. str2는 배열이름, 즉 주소이므로 상수이기에 lvalue가 될 수 없다.
+strcpy(str2, "abcd" );
+
+char str3[100];
+std::cin>str3;
+std::cout<<str3;
+
+char* str4;
+str4= "abcd";
+std::cout<< str4 ;
 
 1. 클래스
 클래스명 대문자로 시작
@@ -11,10 +33,130 @@
 디폴트생성자						디폴트소멸자
 반환값 없다.						매개변수랑 반환값 , 디폴트 값 설정 모두 없다
 
-디폴트생성자 호출은 괄호를 생략한다.
+2-1.생성자
+★디폴트생성자 호출은 괄호를 생략한다.
+Aclass a;
+Aclass a2 = Aclass();
+
 사용자정의생성자가 있고 디폴트 생성자가 없을 경우, 디폴트생성자로 객체생성 오류난다.
 
+2-2. 소멸자
+주로 동적해제할 때 쓴다.
 
 
+3. 범위 지정 :: , const, mutable
+클래스 밖에서 멤버함수 정의할 때
+형태 : 반환값 클래스명::멤버함수명() {}
+
+#include <iostream>
+
+class AClass {
+private:
+	int n;
+public:
+	AClass(){}
+	AClass(int num);
+	void getData() const;
+};
+
+int main(void) {
+	AClass a(30);
+	a.getData();
+	return 0;
+}
+
+AClass::AClass(int num) { n = num; }
+void AClass:: getData() const { std::cout << "AClass의 인스턴스객체입니다. 멤버변수 n의 값은 " << n << "입니다." << std::endl; }
+
+4. 초기화
+int num = 3;	// 복사초기하
+int num2(30);	//직접 초기화
+int num3{ 300 }; //중괄호 직접 초기화
+int num4 = { 3000 }; //중괄호 복사초기화
+
+int x = 3.14;      //3
+int x1{3.14};		//double에서 int로의 변환에는 축소변환필요하다. 오류C2397
+
+4-1. 콜론 초기화/이니셜라이저
+상수, 참조자, 멤버변수가 클래스객체일 때 반드시 콜론 초기화 필요!
+함수머리에 콜론초기화함
+형태-  :멤버변수(매개변수)
 
 
+//상수 콜론 초기화
+class ConstClass {
+
+        private:
+            int m_value;
+            const int m_value2;   //상수멤버변수는 객체생성되기 전에 반드시 초기화가 되어야 함.
+
+        public:
+            ConstClass(int value, int value2) :m_value2(value2) { 
+                m_value = value;
+		 /*m_value2 = value2;*/     //lvalue는 상수가 될 수 없다.
+            } 
+
+};
+
+//참조자 콜론초기화
+ class RefClass {
+
+        private:
+            int& ref;
+
+        public :
+            RefClass(int& r) :ref(r) { }      //참조자 역시 객체가 생성되기 전에 반드시 초기화가 되어야 함.
+            void showValue() {
+                printf("참조자ref:%d", ref);
+            }
+ };
+            int main(void) {
+                int n = 50;
+                RefClass obj(n);
+                obj.showValue();
+                return 0;
+ }
+
+
+//멤버변수가 객체일 때 , 콜론 초기화
+ #include <iostream>
+
+class Position {
+
+        private:
+            int m_x;
+            int m_y;
+
+        public:
+            Position(int x, int y) { 
+                printf("position객체 생성\n");
+                m_x = x;
+                m_y = y;
+            }
+            
+            void getData() {
+                printf("(x,y)=(%d,%d)\n", m_x, m_y);
+            }
+};
+
+class ObjClass {
+        private:
+            Position pos;		//객체 멤버변수
+
+        public :
+            ObjClass(int x, int y) : pos(x, y) { printf("ObjClass객체 생성\n"); }   //ObjClass가 생성되기 전에 멤버변수로 Position객체가 생성되어야 한다. 
+            void showValue() {
+                pos.getData();
+            }
+ };
+
+ int main(void) {
+
+            ObjClass o(3,6);
+            o.showValue();
+            return 0;
+ }
+
+실행결과> position객체 생성
+		ObjClass객체 생성
+		(x,y)=(3,6)

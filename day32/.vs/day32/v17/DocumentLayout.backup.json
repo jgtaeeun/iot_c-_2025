@@ -3,16 +3,12 @@
   "WorkspaceRootPath": "C:\\Source\\iot_c-_2025\\day32\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|C:\\Source\\iot_c-_2025\\day32\\MyClass3.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|solutionrelative:MyClass3.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|C:\\Source\\iot_c-_2025\\day32\\test.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|solutionrelative:test.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|C:\\Source\\iot_c-_2025\\day32\\MyClass2.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|solutionrelative:MyClass2.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|C:\\Source\\iot_c-_2025\\day32\\MyClass.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|solutionrelative:MyClass.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|C:\\Source\\iot_c-_2025\\day32\\\uBB38\uC790\uC5F4\uCC98\uB9AC\uD558\uAE30.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1A618D57-7F06-4823-B383-D0FF299B821B}|day32.vcxproj|solutionrelative:\uBB38\uC790\uC5F4\uCC98\uB9AC\uD558\uAE30.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,45 +18,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "MyClass.cpp",
-              "DocumentMoniker": "C:\\Source\\iot_c-_2025\\day32\\MyClass.cpp",
-              "RelativeDocumentMoniker": "MyClass.cpp",
-              "ToolTip": "C:\\Source\\iot_c-_2025\\day32\\MyClass.cpp",
-              "RelativeToolTip": "MyClass.cpp",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-19T03:02:18.522Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "MyClass3.cpp",
-              "DocumentMoniker": "C:\\Source\\iot_c-_2025\\day32\\MyClass3.cpp",
-              "RelativeDocumentMoniker": "MyClass3.cpp",
-              "ToolTip": "C:\\Source\\iot_c-_2025\\day32\\MyClass3.cpp",
-              "RelativeToolTip": "MyClass3.cpp",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAcwBgAAAACAAAAAAAAAA==",
+              "Title": "test.cpp",
+              "DocumentMoniker": "C:\\Source\\iot_c-_2025\\day32\\test.cpp",
+              "RelativeDocumentMoniker": "test.cpp",
+              "ToolTip": "C:\\Source\\iot_c-_2025\\day32\\test.cpp",
+              "RelativeToolTip": "test.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-19T02:40:10.076Z",
+              "WhenOpened": "2025-03-19T08:13:35.162Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "MyClass2.cpp",
-              "DocumentMoniker": "C:\\Source\\iot_c-_2025\\day32\\MyClass2.cpp",
-              "RelativeDocumentMoniker": "MyClass2.cpp",
-              "ToolTip": "C:\\Source\\iot_c-_2025\\day32\\MyClass2.cpp",
-              "RelativeToolTip": "MyClass2.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAA==",
+              "Title": "\uBB38\uC790\uC5F4\uCC98\uB9AC\uD558\uAE30.cpp",
+              "DocumentMoniker": "C:\\Source\\iot_c-_2025\\day32\\\uBB38\uC790\uC5F4\uCC98\uB9AC\uD558\uAE30.cpp",
+              "RelativeDocumentMoniker": "\uBB38\uC790\uC5F4\uCC98\uB9AC\uD558\uAE30.cpp",
+              "ToolTip": "C:\\Source\\iot_c-_2025\\day32\\\uBB38\uC790\uC5F4\uCC98\uB9AC\uD558\uAE30.cpp",
+              "RelativeToolTip": "\uBB38\uC790\uC5F4\uCC98\uB9AC\uD558\uAE30.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-19T02:20:14.424Z",
+              "WhenOpened": "2025-03-19T08:01:10.49Z",
               "EditorCaption": ""
             }
           ]
