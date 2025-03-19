@@ -107,13 +107,17 @@ int main(void){
 int *p = new int;
 delete p;
 
-5.2 int배열
+5.2 int배열 , char배열
 int *p = new int[5];
 p[0]=1;
 *(p+1)=2;
 delete[] p;
 
-5.3. new는 생성자를 호출하기에 초기화 할 수 있다.
+char * p = new char[50];
+strcpy(p, "hello");
+delete[] p;
+
+5.3. ★new는 생성자를 호출하기에 초기화 할 수 있다.
 int *p = new int[5]{1,2,3,4,5};
 delete[] p;
 
@@ -140,7 +144,7 @@ int main(){
 5.5 참조자 &
 - 자신이 참조하는 변수를 대신할 수 있는 또 하나의 이름
 - 자신이 참조하는 변수와 동일한 메모리 공간을 가진다
-- 참조자 선언과 동시에 초기화
+- ★참조자 선언과 동시에 초기화
 - lvalue를 참조하여야함 + const 상수 참조자
 
 int num=10;
