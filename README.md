@@ -417,3 +417,142 @@ c++
             return 0;
         }
         ```
+## 32일차(3/19)
+- 참조자 실습 
+    - 상수참조자인 경우, 값변경 불가 [c++](./day32/prac_ref2.cpp)
+    - 상수참조자를 통해 리터럴상수 연산  [c++](./day32/prac_ref6.cpp)
+    - 반환형이 참조형인 경우 , 참조자변수일때 [C++](./day32/prac_ref4.cpp), 변수일때 [C++](./day32/prac_ref3.cpp)
+    - 함수 내 지역변수를 참조자로 반환할 경우, 지역변수는 함수종료 후 소멸되기에 쓰레기값이다. [C++](./day32/prac_ref5.cpp)
+    - const포인터와 const참조자 [C++](./day32/prac_ref7.cpp)
+        ```C++
+        #include <iostream>
+
+        int main(void) {
+
+            const int num = 12; //상수이므로 직접 변경 불가능, 포인터 변수나 참조자로 값 변경해야함
+            const int* p = &num;   //데이터상수 (주소변경가능, 값변경 불가)
+            
+            const int& ref = *p;  //상수참조자
+
+            std::cout << "포인터 변수 p가 가리키는 값: " << *p << std::endl;
+            std::cout << "참조자 ref: " << ref << std::endl;
+
+            return 0;
+        }
+        ```
+- 03-2 클래스와 객체
+    - 객체와 인스턴스
+    - 인스턴스 -어떤 클래스로부터 만들어진 객체
+    - `객체를 생성하기 위해는 생성자호출이 필요하다.`
+    - 클래스
+        - 구성요소
+            - 접근제어 지시자(private, public, protected)
+            - 멤버변수 - private
+            - 멤버함수  - public
+        - 클래스 내에 선언된 변수는 클래스 내에 선언된 함수에서만 접근 가능하다.
+        - 클래스명의 첫글자는 대문자이다.
+        - 생성자는 멤버함수이다.
+        - 클래스의 인스턴스 객체 선언 후 멤버함수의 생성자로 초기화한다.
+    - 생성자
+        - 클래스명과 동일
+        - 출력자체가 없다. void도 적지 않는다. 
+        - `디폴트 생성자 호출은 괄호 생략해야한다. 이유는 main함수내에서의 함수선언 식과 구분하기 위해서이다.`(교재 172쪽)
+        ```c++
+        class AClass {
+
+        private :
+            int n1;
+            int n2;
+        public :
+            AClass(){}
+
+        };
+
+        int main(void) {
+
+        AClass b; //디폴트 생성자
+        //AClass b(200, 400); //입력이 2개인 생성자는 정의되어있지 않다. 에러(E0289)
+        return 0;
+        }
+        ```
+
+
+        - 사용자 정의 생성자가 정의되고 디폴트생성자가 정의되지 않을 경우, 디폴트생성자 객체 생성 안된다.
+        ```c++
+        #include <iostream>
+
+
+        class MyClass {
+
+        private :
+            int m_num1;
+            int m_num2;
+
+        public :
+            MyClass(int a, int b) {
+                m_num1 = a;
+                m_num2 = b;
+            }
+
+            void printData() {
+                std::cout << "나는 MyClass의 인스턴스입니다. ";
+                std::cout << "m_num1: " << m_num1 << " m_num2: " << m_num2 << std::endl;
+            }
+        };
+        int main(void) {
+            //MyClass obj; //디폴트 생성자가 없다는 에러 E0291
+          
+            MyClass obj2(100, 200);
+            obj2.printData();
+            return 0;
+        }
+        ```
+        - 생성자 오버로딩 - 함수명 동일, 매개변수(개수, 값) 다름
+        ```C++
+        #include <iostream>
+
+
+        class MyClass {
+
+        private :
+            int m_num1;
+            int m_num2;
+
+        public :
+            MyClass(){}
+
+            MyClass(int a, int b) {
+                m_num1 = a;
+                m_num2 = b;
+            }
+        
+        };
+        ```
+    - 소멸자 ~
+        - 클래스의 이름 앞에 '~'가 붙은 형태의 이름을 갖는다.
+        - 출력자체가 없다. void도 적지 않는다.
+        - 매개변수는 void형으로 선언되어야 하기에 오버로딩도, 디폴트 값 설정도 불가능하다.
+        - 직접 소멸자를 정의하지 않으면, 디폴트생성자와 마찬가지로 아무런 일도 하지 않는 디폴트 소멸자가 자동으로 삽입된다.
+        - 소멸자는 대개 생성자에서 할당한 리소스의 소멸에 사용된다.(delete연산자 이용)
+
+    - 클래스 실습
+        - 멤버변수가 str일 때, set함수로 [c++](./day32/MyClass.cpp)
+        - 멤버변수 str일 때, 생성자로  [c++](./day32/MyClass2.cpp)
+        - 멤버변수 str일 때, 생성자 + 동적할당 [c++](./day32/MyClass3.cpp)
+        - ` C++에서 생성자에서 배열의 주소를 포인터로 받을 때 const를 사용하는 이유:  배열의 값이 변경되지 않도록 보호/ const를 사용하면 해당 포인터가 가리키는 메모리의 값을 수정할 수 없게 됩니다. `
+        - `strlen(배열이름)은 배열의 첫 번째 요소의 주소를 반환하는 포인터를 사용하여 문자열의 길이를 구합니다`
+        - `동적 메모리 할당을 통해 포인터가 문자열을 가리키는 경우에도 strlen(포인터)를 사용하여 문자열의 길이를 계산할 수 있습니다.`
+        ```c++
+        MyClass(int i_id, const char* i_name, int i_age){   // const 포인터변수인 이유는 데이터상수 목적으로 (값변경 불가)
+            id = i_id;
+
+            //std::cout << strlen(i_name) << std::endl;
+            name = new char[strlen(i_name)+1];  // 포인터변수=배열이름=배열의 첫번째주소 =>str(배열이름)   
+                                                // 동적 메모리 할당 시 +1을 하는 이유는 널 종료 문자(null terminator, '\0')를 저장하기 위해서입니다.
+            strcpy(name, i_name);
+
+
+
+            age = i_age;
+        }
+        ```
