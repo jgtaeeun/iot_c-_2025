@@ -1,0 +1,96 @@
+0. strcpy()의 경우, # define _CRT_SECURE_NO_WARNINGS
+
+   동적할당은 char* c , c = new char[size] , strcpy(c, "문자열"), delete [] c 
+
+  일반참조는 l-value참조이다. (lvalue는 변수)
+
+1. 디폴트 생성자, 디폴트 소멸자, 디폴트 복사생성자
+
+2. 복사생성자 const &
+인스턴스를 매개변수로 받을 경우, 복사생성자 호출이 무한반복된다.
+그렇기에 매개변수로 받을 때는 const(상수화, 수정불가), &(참조자)를 적어야한다!
+
+생성자로 만든 인스턴스 p, 복사생성자로 만든 인스턴스 p2는 주소는 다르지만 값은 같다.
+
+2-1. 깊은복사, 얕은복사
+깊은복사는 동적할당해제를 각각의 객체마다 한다.
+
+깊은복사-생성자, 복사생성자 모두 동적할당
+얕은복사- 생성자만 동적할당
+
+public :
+	Human(const char* name, int age){    //생성자
+		name = new char[strlen(name)+1];
+		strcpy(this->name, name);
+		this->age = age;
+	}
+	Human (const Human& other){		//복사생성자
+		name = new char[strlen(other.name)+1];
+		strcpy(this->name, name);
+		this->age = age;
+	}
+	~Human(){
+		delete[] name;
+	}
+
+
+public :
+	Human(const char* name, int age){    //생성자
+		name = new char[strlen(name)+1];
+		strcpy(this->name, name);
+		this->age = age;
+	}
+	Human (const Human& other){		//복사생성자
+		strcpy(this->name, name);
+		this->age = age;
+	}
+	~Human(){
+		delete[] name;
+	}
+4. 변환생성자
+다른 타입의 객체로 변환될 때 자동으로 호출되는 생성자
+입력을 한개만 가지는 생성자와 유사
+private:
+	int a;
+public :
+	Human(int a) {
+		this->a =a;
+	}
+
+Human (30); 			//입력이 1개인 생성자로 객체 형성
+Human h = 30; 			// 변환생성자로 객체 형성
+
+
+explicit으로 변환생성자 못하게 막는다.
+public :
+	explicit Human(int a) {
+		this->a =a;
+	}
+Human (30);  //입력이 1개인 생성자로 객체 형성
+//Human h = 30;     생성자가 없다고 에러난다.
+
+5. 이동생성자
+이동 생성자는 r-value 참조(&&)를 파라미터로 받는다.
+복사가 아닌 값 이동시키는 것으로 성능이 좋다.
+
+private:
+	int a;
+public :
+	Human(int a) {         //생성자
+		this->a =a;
+	}
+	Human(const Human& other){   //복사생성자
+		this->a = other.a; 
+	}
+
+	Human(const Human&& other) noexcept{
+		this->a = other.a;
+	}
+
+int main(void){
+	Human h1(10);
+	Human hcopy(h1);
+	Human hmove(std::move(h1));
+	return 0;
+}
+ 

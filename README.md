@@ -761,3 +761,179 @@ c++
             return 0;
         }
         ```
+## 33일차(3/20)
+- `자동으로 제공 :  디폴트생성자, 디폴트소멸자, 디폴트복사생성자`
+- 05-01 복사생성자 ,05-02 깊은 복사, 얕은 복사
+    - 자동으로 삽입이 되는 디폴트 복사 생성자
+    ```c++
+    /*
+	복사생성자(copyConstructor)
+    */
+    #define _CRT_SECURE_NO_WARNINGS
+    #include <iostream>
+    class Person {
+
+    private:
+        int age;
+        char name[20];
+
+    public :
+        Person(int i_age, const char* c){
+            std::cout << "Constructor call~" << std::endl;
+            age = i_age;
+            strcpy(name, c);
+        }
+        void getData(){
+            std::cout << "age: " << age << " , name: " << name << std::endl;
+        }
+    };
+
+
+    int main(void) {
+        Person p(20,"정해성");  //생성자 Person(int i_age, const char* c)
+        p.getData();
+
+        Person p2(p);	//디폴트 복사생성자
+        p2.getData();
+
+        Person p3 = p;  //디폴트 복사생성자
+        p3.getData();
+
+        return 0;
+    }
+    ```
+    <img src='./images/디폴트복사생성자.png'>
+   
+    - 디폴트 복사생성자 명시적 [c++](./day33/copyContructor2.cpp)
+        - **매개변수로 객체를 받을 수 없다. 복사생성자가 무한반복되기 때문이다.**
+        - **매개변수로 객체를 받을려면 상수 참조연산자 (const & )를 적어야한다.**
+        ```c++
+        Person(const Person& other) {
+            age = other.age;
+            strncpy(this->name, other.name , strlen(other.name)+1 ) ;  //널문자포함
+        }
+        ```
+    - 디폴트 복사생성자 명시적 동적할당 +깊은복사  [c++](./day33/copyContructor3.cpp)
+        - 동적할당은 char* c , c = new char[size] , strcpy(c, "문자열"), delete [] c 
+        - 생성자로 만든 인스턴스 p, 복사생성자로 만든 인스턴스 p2는 주소는 다르지만 값은 같다.
+        - 깊은 복사일 경우, 동적할당해제는 각각 된다.
+        - 얕은 복사일 경우, 동적할당이 같은 곳을 가리키기에 하나의 인스턴스가 사라지면 나머지 하나의 동적해제에서 에러난다.
+
+- 그 외 생성자
+    - 변환생성자 
+        - 다른 타입의 객체로 변환될 때 자동으로 호출되는 생성자
+        - 입력을 한개만 가지는 생성자와 유사
+            ```c++
+            #include <iostream>
+
+
+            class Time {
+
+            private:
+                int hour;
+                int min;
+                int sec;
+
+            public:
+                Time() {	}
+                Time(int abssec) {
+                    hour = abssec / 3600;
+                    min = (abssec / 60) % 60;
+                    sec = abssec % 60;
+                }
+                void printTime() {
+                    printf("현재시간은 %d시 %d분 %d초 입니다.\n", hour, min, sec);
+                }
+            };
+
+            int main(void) {
+                //Time now(9999);	//매개변수가 1개인 생성자
+                Time now = 9999;   //변환생성자 (int -> Time)
+                now.printTime();
+                return 0;
+            }
+
+            ```
+        - 변환에 의한 초기화(변환생성자)는 explicit으로 막을 수 있다.
+            ``` c++
+            /*
+            explicit - 변환생성자 못함. 
+            */
+
+            #include <iostream>
+
+            class MyClass {
+
+            private:
+                int value;
+
+            public:
+                explicit MyClass(int value) {
+                    std::cout << "변환생성자 호출" << std::endl;
+                    this->value = value;
+                }
+                void printMyClass() {
+                    std::cout << "value: " << value << std::endl;
+                }
+            };
+            int main(void) {
+                
+                //MyClass obj = 10;		//변환생성자
+                //obj.printMyClass();
+
+                MyClass obj2(20);		//생성자
+                obj2.printMyClass();
+                return 0;
+            }
+            ```
+    - 이동생성자 [c++](./day33/moveConstructor2.cpp)
+        - 이동 생성자는 r-value 참조(&&)를 파라미터로 받으며, 자원을 복사하는 대신 이동시키는 방식으로 성능을 최적화합니다.
+        ```c++
+        /*
+            이동생성자(&&)
+            r-value 참조를 파라미터로 갖는 이동 생성자
+        */
+        #define _CRT_SECURE_NO_WARNINGS
+        #include <iostream>
+
+        class Human {
+        private:
+            char name[10];
+            int age;
+        public:
+            //입력이 2개인 생성자 (생성자 오버로딩)
+            Human(const char* name, int age) {
+                std::cout << "입력이 2개인 생성자(생성자 오버로딩)" << std::endl;
+                strcpy(this->name, name);
+                this->age = age;
+            }
+            //복사생성자
+            Human (const Human& other){
+                std::cout << "복사생성자(const, 참조연산자&)" << std::endl;
+                strcpy(this->name, other.name);
+                this->age = other.age;
+            }
+            //이동생성자 - 값 복사가 아니라 값이 이동이다.
+            Human(Human&& other) noexcept{
+                std::cout << "이동생성자(r-value참조)" << std::endl;
+                strcpy(this->name, other.name);
+                this->age = other.age;
+            }
+            void printHuman() {
+                printf("[이름|나이] %s %d\n", this->name, this->age);
+            }
+        };
+        int main(void) {
+            
+            Human h("day6", 4);
+            std::cout << "h의 주소" << &h << std::endl;  //h의 주소0000002773B8F698
+            h.printHuman();
+            Human h2(h);
+            std::cout << "h2의 주소" << &h2 << std::endl; //h2의 주소0000002773B8F6C8
+            h2.printHuman();
+            Human h3(std::move(h));
+            std::cout << "h3의 주소" << &h3 << std::endl; //h3의 주소0000002773B8F6F8
+            h3.printHuman();
+            return 0;
+        }
+        ```
