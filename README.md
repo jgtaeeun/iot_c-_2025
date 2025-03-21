@@ -937,3 +937,570 @@ c++
             return 0;
         }
         ```
+
+## 34일차(3/21)
+- **함수의 매개변수로 사용자 정의 클래스 객체(인스턴스)가 들어갈 때는 참조로 받는 것이 효율적입니다**
+- C++에서 기본 자료형(int, float, double, char, 등)을 함수 매개변수로 받을 때는 값으로 받는 것과 참조로 받는 것 사이에 큰 성능 차이가 없습니다.
+- nullptr은 "이 포인터는 아무것도 가리키지 않는다" 라는 의미를 정확하게 전달합니다.
+- 함수에 const를 붙이는 의미 - 그 함수 내부에서 멤버 변수를 변경할 수 없게 됩니다.
+    ```c++
+    //const 멤버 함수 특징
+        //이 함수는 멤버 변수를 수정할 수 없음
+        void showValue() const { 
+            std::cout << "Value: " << m_value << std::endl;
+        }
+
+        // 이 함수는 멤버 변수를 변경할 수 있음 (const 없음)
+        void setValue(int value) {  
+            m_value = value;
+        }
+    ```
+
+- 클래스 멤버함수에서 객체 덧셈 함수 
+    - return값이 객체인 경우 [c++](./day34/operator3.cpp)
+    ```c++
+    public:
+        //생성자
+        Position(int ax=0, int ay=0) : x(ax),y(ay) {}
+        //덧셈함수
+        Position add(const Position& other){
+            return Position(x+other.x , y+ other.y);
+        }
+    ```
+    - return값이 참조인 경우  [c++](./day34/operator4.cpp)
+    ```c++
+    public:
+        //생성자
+        Position(int ax=0, int ay=0) : x(ax),y(ay) {}
+        //덧셈함수
+        Position& add(const Position& other){
+            x += other.x;
+            y += other.y;
+            return *this;
+        }
+    ```
+- 오버로딩 - 매개변수 타입, 개수가 다름 ,
+    - 함수오버로딩 -매개변수 타입, 개수가 다름 /함수명 동일 /반환값은 관계없음
+    - 생성자오버로딩 - 생성자명동일(클래스명) /매개변수 타입과 개수 다름
+    - 연산자오버로딩
+
+
+- 10-1 연산자 오버로딩
+    - 필요성
+        - 내장된 자료형 (int, char, 배열) 등은 대입연산, 산술연산 등이 가능하다.
+        - `사용자 정의 자료형(class)에서 연산에 관련된 것을 가능하도록 하기 위해서이다`
+        
+    -  컴파일러가 자동으로 제공하는 "디폴트 대입 연산자(기본 대입 연산자)"를 호출 
+         ```c++
+        #define _CRT_SECURE_NO_WARNINGS
+        #include <iostream>
+
+        class MyClass {
+
+        private:
+            int m_a, m_b;
+            const char* m_name;
+
+        public:
+            /*
+            nullptr은 "이 포인터는 아무것도 가리키지 않는다" 라는 의미를 정확하게 전달합니다.
+            nullptr은 nullptr_t 타입을 가지므로, 정수(int 등)로 변환되지 않아 의도치 않은 동작을 방지합니다
+            */
+            MyClass(int a =0 , int b = 0, const char* name = nullptr) : m_a(a), m_b(b), m_name(name) {
+            
+            }
+
+            void showMyClass() {
+                std::cout << m_a << ", " << m_b << ", " << m_name << std::endl;
+            }
+        };
+
+        int main(void) {
+
+            MyClass obj(3, 21, "window");
+            obj.showMyClass();
+
+            /*
+            클래스 MyClass에는 명시적으로 기본 생성자가 정의되어 있지 않지만, 
+            모든 매개변수에 기본값이 제공된 생성자 가 있기 때문에, 
+            이를 이용하여 기본 생성자가 자동으로 제공됩니다.
+            */
+            MyClass obj2;
+            obj2 = obj;		// 연산자 오버로딩을 사용한 것이 아니라, 컴파일러가 자동으로 제공하는 "디폴트 대입 연산자(기본 대입 연산자)"를 호출
+            obj2.showMyClass();
+            return 0;
+        }
+        ```
+
+    - 연산자 오버로딩을 통해 operator+를 직접 정의 
+        -  C++에서 클래스에 대한 덧셈(+) 연산자는 기본적으로 제공되지 않기 때문입니다. [C++](./day34/operator2.cpp)
+        1. 멤버함수에 의한 연산자 오버로딩  p1 operator+ (p2)
+        ```c++
+        MyClass operator+(const MyClass& other) {
+            return MyClass(value+other.value);
+        }
+
+        ```
+        ```c++
+        MyClass& operator+(const MyClass& other) {
+            value += other.value;
+            return *this;
+        }
+        ```
+
+        ```c++
+        
+        int main(void){
+
+            Myclass obj(10);    //입력이 1개인 생성자
+            MyClass obj2 (obj); //복사생성자
+            MyClass obj3 = obj2 //복사생성자
+
+            Myclass obj4  = obj + obj2 ; //연산자 오버로딩 + 복사생성자
+            //Myclass obj4  = obj.operator+(obj2) ; 
+            
+            //  MyClass operator+(const MyClass& other)  로 obj4생성하면 main함수 내 객체생성이 총 5번
+             //MyClass& operator+(const MyClass& other)로 obj4생성하면 main함수 내 객체생성이 총 4번
+        }
+        ```
+
+        2. 전역함수에 의한 연산자 오버로딩 operator+ ( p1 ,p2)  [c++](./day34/operator7.cpp)
+            - inline 함수의 동작 원리 - 함수의 호출이 "호출"이 아니라, 그 함수의 코드 자체로 대체된다는 것입니다.
+            ```c++
+            inline Point operator+(int n, const Point& other);  //함수선언
+
+            int main(void) {
+                Point obj(10, 20);
+                
+                //전역함수
+                Point obj2 = operator+(20 ,obj);    //함수의 호출이 "호출"이 아니라, 그 함수의 코드 자체로 대체된다는 것입니다.
+                obj2.showPoint();
+
+                return 0;
+            }
+            //함수정의
+            inline  Point operator+(int n , const Point& other){
+                return Point(n + other.x, n + other.y);
+            }
+            ```
+            - **전역 함수로 연산자 오버로딩을 할 때, 참조 반환 (&)을 사용하려면 지역 객체를 반환할 수 없습니다.**
+                - 함수 내부에서 생성한 지역 객체는 함수가 끝나면 소멸됩니다.
+                - 따라서 지역 객체의 참조를 반환하면 함수가 종료된 후 해당 참조가 가리키는 메모리는 사라지므로 잘못된 참조(lvalue)가 됩니다.
+            - **객체를 반환할 때는 보통 값 반환이 가장 안전한 방법이다.**
+             <img src ='./images/연산자오버로딩방법2가지.png'>
+             <img src='./images/멤버함수연산자오버로딩.png'>
+             <img src='./images/전역함수연산자오버로딩.png'>
+    -  friend 키워드 [c++](./day34/operator8.cpp)
+        - private로 선언된 멤버변수를 전역함수에서 접근하려면 friend를 앞에 적고 함수선언을 멤버함수 내에서 해줘야 한다.
+        ```c++
+            #include <iostream>
+
+            class Complex {
+
+            private:
+                double real, image;
+
+            public:
+                Complex(double r = 0, double i = 0) :real(r), image(i) {}
+
+                Complex operator+(const Complex& other) {
+                    return Complex(real + other.real, image + other.image);
+                }
+
+                /*함수원형에 freind선언을 하면 private 또는 protected 멤버변수 접근 가능*/
+                friend Complex operator*(int n, const Complex& other);
+                
+                void showComplex() {
+                    printf("%.1lf %.1lf\n", real, image);
+                }
+
+            };
+
+            inline Complex operator*(int n, const Complex& other) {
+                return Complex(n * other.real, n * other.image);
+            }
+        ```
+        - 특정 함수나 다른 클래스를 friend로 선언하면 private 멤버에 접근 가능.
+        - 보통 외부 함수 또는 다른 클래스가 내부 데이터를 직접 조작할 수 있도록 할 때 사용.
+
+    - 연산자 오버로딩을 통해 operator<<를 직접 정의 
+        - C++의 std::cout은 기본 데이터 타입(int, double, char 등)에 대해서는 << 연산자를 제공하지만, 사용자 정의 클래스(예: Complex 객체)는 기본적으로 지원하지 않음
+        - **출력 연산자는 반드시 std::ostream&을 반환해야 한다!**
+        - 전역 함수 연산자 오버로딩은 객체를 반환하는 경우가 많지만, operator<<은 예외적으로 std::ostream&을 반환
+        <img src='./images/출력연산오버로딩결과는참조반환.png'>
+
+        ```C++
+        // 출력 연산자 오버로딩 함수
+        inline std::ostream& operator<<(std::ostream& out, const Complex& other) {
+            out << other.real << ", " << other.image;
+            return out;
+        }
+        ```
+       <img src='./images/출력오버로딩1.png'>
+        ```C++
+        Complex c(1.1, 2.2);
+        std::cout << c << std::endl;
+        ```
+       <img src='./images/출력오버로딩2.png'>
+
+       1. 출력연산자 오버로딩 + private , friend 키워드
+        ```c++
+        #include <iostream>
+
+        class MyClass {
+        private:
+            int value;
+        public:
+            MyClass(int n) :value(n){}
+            friend std::ostream& operator<< (std::ostream& out, const MyClass& other);
+        };
+
+        std::ostream& operator<< (std::ostream& out, const MyClass& other) {
+            out << other.value;   //private 멤버변수 접근 위해 friend 필요하다.
+            return out;
+        }
+        int main(void) {
+            MyClass obj(41);
+            std::cout << obj << std::endl;   //출력 연산자 오버로딩 필요하다.
+            return 0;
+        }
+        ```
+        2. 출력연산자 오버로딩 연쇄출력 [c++](./day34/coutOperator2.cpp)
+        ```c++
+        /*연쇄출력*/
+        /*출력 연산자 오버로딩*/
+        #include <iostream>
+
+        class Money {
+        private:
+            int money;
+        public:
+            Money(int m = 0) : money(m) {}  // 생성자
+
+            // 출력 연산자 오버로딩
+            friend std::ostream& operator<<(std::ostream& out, const Money& other) {
+                out << "현재 금액: " << other.money;
+                return out;  // 출력 스트림을 반환하여 연쇄 출력이 가능하도록 함
+            }
+        };
+
+        int main() {
+            Money m1(10000), m2(20000), m3(30000);
+
+            // 연쇄 출력: 여러 개의 출력이 한 줄로 연결되어 출력됨
+            std::cout << m1 << ", " << m2 << ", " << m3 << std::endl;
+
+            return 0;
+        }
+
+        ```
+    - 연산자 오버로딩 깊은 복사 [C++](./day34/Human2.cpp)
+        - 기본적으로 C++에서 컴파일러가 제공하는 디폴트 대입 연산자는 얕은 복사(Shallow Copy)입니다.
+        - 주의할 점
+            - char * name이 초기화되지 않아 쓰레기 값(잘못된 포인터 주소)을 가질 가능성이 높아.
+                - xman이 생성될 때, name에 nullptr이 아닌 쓰레기 값이 들어갈 수 있음.
+                - operator=를 호출하면, delete[] name;이 실행됨.
+                - 하지만 name이 올바른 메모리를 가리키지 않으면 런타임 오류(크래시) 발생!
+            - 기존 메모리 해제 
+            ```c++
+            //#define _CRT_SECURE_NO_WARNINGS
+            #include <iostream>
+            class Human {
+            private:
+                char* name;
+                int age;
+            public:
+                Human(const char* pn = nullptr, int i_age =0)   {
+                    std::cout << "생성자" << std::endl;
+                    age = i_age;
+                    
+                    if (pn) {
+                        name = new char[strlen(pn) + 1];
+                        strcpy(name, pn);
+                    }
+                    else {
+                        name = new char[1];
+                        name[0] = '\0';
+                    }   
+                }
+
+                Human(const Human& other) {
+                    std::cout << "복사생성자" << std::endl;
+                    name = new char[strlen(other.name) + 1];
+                    strcpy(name, other.name);
+                    age = other.age;
+                }
+
+                ~Human() {
+                    std::cout <<"소멸자" << std::endl;
+                    delete[] name;
+                }
+
+                //깊은 복사- 대입연산자 오버로딩
+                Human& operator= (const Human& other) {
+                    if (this != &other) {  // 자기 자신 대입 방지
+                        delete[] name;  // 기존 메모리 해제 (중요!)
+
+                        name = new char[strlen(other.name) + 1];  // 새로운 메모리 할당
+                        strcpy(name, other.name);
+                        age = other.age;
+                    }
+
+                    return *this;
+                }
+
+                void showHuman() {
+                    std::cout << name << ", " << age << std::endl;
+                }
+            };
+
+
+            int main(void) {
+                Human man("홍명보", 30);		//생성자
+                man.showHuman();
+
+                Human copyman(man);				//복사생성자
+                copyman.showHuman();
+
+                Human xman;
+                xman=copyman;				//대입연산자 호출 - 얕은 복사면 에러나기에 대입연산자 오버로딩 필요하다.
+                xman.showHuman();
+                return 0;
+            }
+            ```
+    - 연산자 오버로딩이 불가능한 연산자의 종류
+        - . 멤버접근 연산자
+        - .* 멤버 포인터 연산자
+        - :: 범위지정 연산자
+        - ?: 조건연산자
+        - sizeof 바이트 단위 크기 계산
+        - typeid RTTI 관련 연산자
+        - static_cast, dynamic_cast, const_cast, reinterpret_cast 형변환 연산자
+
+- 10-2 단항연산자 오버로딩
+    - operator++와 operator--는 객체의 값을 증가/감소
+    - operator-는 객체 값의 부호를 반전시키는 데 유용합니다.
+    - operator!는 논리 부정 연산을 할 수 있게 하며, operator~는 비트 반전을 처리할 수 있습니다.
+    - operator()는  함수 호출 연산자
+    1. operator()
+    ```c++
+    #include <iostream>
+
+    class Money {
+
+    private:
+        int money;
+    public:
+        Money(int m=0) :money(m) {}   //생성자
+
+        int operator()() {            //단항연산자 오버로딩 - 매개변수 없는 경우
+            return money;
+        }
+
+        void operator()(int m) {		 //단항연산자 오버로딩 - 매개변수 있는 경우
+            money += m;
+        }
+    };
+
+    int main(void) {
+        Money m;			// 생성자로 인스턴스 생성
+        printf("money: %d\n", m.operator()());
+        
+        m(1000);     // m.operator()(1000)과 동일
+        printf("money: %d\n", m.operator()());
+
+
+        return 0;
+    }
+    ```
+- 매크로 함수와 인라인 함수
+    1. 매크로 함수
+        - #define을 사용하여 코드의 특정 부분을 자동으로 치환하는 방식
+        - 매크로는 전처리기에서 실행되므로, 컴파일 전에 코드가 변환되는 특징
+        - `매크로는 매개변수들을 괄호로 감싸서 계산해주어야 합니다. 그렇지 않으면 연산 순서가 잘못될 수 있습니다`
+        
+        ```c++
+        #define ADD(a, b)  ((a) + (b))
+
+        #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+
+        #define MAX(a, b) ((a) > (b) ? (a) : (b))
+        #define MIN(a, b) ((a) < (b) ? (a) : (b))
+
+        #define SQUARE(x) ((x) * (x))
+
+        #define LOG_INFO(msg) std::cout << "[INFO] " << msg << std::endl;
+        ```
+        - C++에서 문자열 리터럴을 연속으로 나열하면 자동으로 하나의 문자열이 됨.
+            - #(해시기호) -  매크로의 인자를 문자열로 변환함
+            - ##(더블 해시 기호) - 매크로의 인자들을 토큰 결합함.
+            ``` C++
+            #define ADD(a, b)   #a"+"#b   
+            #define CONCAT(a, b) a ## b  // 매크로가 두 인자를 결합해서 하나의 변수명으로 만듦.
+
+            int main() {
+                int xy = 10;  // "x"와 "y"가 결합된 변수명 "xy"
+                
+                printf("ADD(a,b):%s\n", ADD(10, 20));  //10+20
+                std::cout << CONCAT(x, y) << std::endl;  // "xy"라는 변수명 출력
+                return 0;
+            }
+            ```
+
+    2. 인라인 함수
+        - 함수 호출을 실제 코드로 교체하는 기법
+        - 함수 내용을 호출하는 위치에 직접 삽입하는 방식으로 동작합니다.
+        ```C++
+        #include <iostream>
+
+        inline int func(int x) {				//인라인 함수
+            return x * x;
+        }
+        int main(void) {
+            /*
+             컴파일러가 x * x로 대체하고, 실제로는 func(2)라는 함수 호출이 일어나지 않습니다.
+            */
+            std::cout << func(2) << std::endl;  //4
+            return 0;
+        }
+        ```
+
+- 13-1 템플릿 
+    - 템플릿은 선언과 함수정의가 분리될 수 없다.  
+    1. 함수 템플릿 기본 [C++](./day34/templete2.cpp)
+        1. 템플릿 선언 일반화
+        ```c++
+        template <typename T>	
+        T func(T a, T b) {
+            std::cout << "T" << std::endl;
+            return a + b;
+        }
+        ```
+        2. 템플릿 특수화
+        ```c++
+        template<>				//템플릿 특수화- 템플릿 일반화 중 특별한 타입만 처리
+        int func<int>(int a, int b) {
+            std::cout << "int" << std::endl;
+            return a + b;
+        }
+        ```
+    2. 함수 템플릿의 typename이 여러개인 경우 [C++](./day34/templete3.cpp)
+        ```c++
+        template <typename T, typename T2>
+        void func(T a, T2 b) {
+            std::cout << a << std::endl;
+            std::cout << b << std::endl;
+        }
+        ```
+    3. 클래스 템플릿 기본
+        - `인스턴스 생성시 반드시 typename을 작성해야한다.`
+        ```c++
+        template < typename T>
+        class CTemplete {
+        private:
+            T data;
+        public:
+            CTemplete(T d) : data(d){}
+            T getData() {
+                return data;
+            }
+        };
+
+        #include <iostream>
+
+        int main(void) {
+            CTemplete<int> obj(100);
+            printf("data: %d\n", obj.getData());
+
+            CTemplete<std::string> obj2("클래스템플릿테스트");
+            std::cout << "data: " << obj2.getData() << std::endl;
+            return 0;
+        }
+
+        ```
+    - `std::string을 사용하는 이유`
+        <img src ='./images/char[]과stdstring.png'>
+        <img src ='./images/c++에서stdstring사용하는 이유.png'>
+
+    
+    4. 클래스 템플릿 일반화, 특수화 [c++](./day34/templete5.cpp)
+    ```c++
+    #include <iostream>
+
+    template <typename T>
+    class CTest {				//클래스 템플릿 일반화
+    private:
+        T num;
+    public:
+        CTest (T n) : num(n){}
+        T getData() { 
+            return num;
+        }
+
+    };
+
+    template <>	
+    class CTest<char> {				//클래스 템플릿 특수화
+    private:
+        char data;
+    public:
+        CTest(char d) : data(d){}
+        char getData() {
+            return data;
+        }
+
+    };
+
+
+    int main(void) {
+        CTest<int> obj(10);	//클래스 템플릿은 인스턴스 생성시 반드시 typename을 작성해야 한다.
+        std::cout << obj.getData() << std::endl;
+        
+        CTest<char> obj2('a');
+        std::cout << obj2.getData() << std::endl;
+        return 0;
+    }
+    ```
+
+    5. 템플릿을 사용하여 배열을 다루는 클래스를 구현 [C++](./day34/templete6.cpp)
+    ```C++
+    #include <iostream>
+
+    template <typename T , int sz>
+    class CTest {
+    private:
+        T ary[sz];
+    public:
+        // 배열 인덱스 접근 연산자 오버로딩
+        /*
+        T& operator[](int idx)에서 반환 타입이 T& (즉, 참조 타입)인 이유는 
+        해당 인덱스에 있는 값을 수정 가능하게 하기 위함입니다.
+        */
+        T& operator[](int idx) {
+            if (idx < 0 || idx >= sz) {
+                std::cout << "error" << std::endl;
+                exit(1);
+            }
+            return ary[idx];
+        }
+
+        void printData() {
+            for (int i = 0; i < sz; i++) {
+                std::cout << ary[i] << std::endl;
+            }
+        }
+    };
+    int main(void) {
+        CTest<int, 5> obj;
+        obj.operator[](0) = 10;
+        obj[1] = 11;
+        obj[2] = 20;
+        obj[3] = 50;
+        obj[4] = 55;
+        obj.printData();
+
+        return 0;
+    }
+    ```
+
+
