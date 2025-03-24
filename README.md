@@ -1504,3 +1504,178 @@ c++
     ```
 
 
+## 35일차(3/24)
+- 생성자 
+    - 기본 생성자와 입력 1개 받는 생성자에 디폴트 값이 있는 경우에서 기본생성자가 두개 있다고 에러난다.
+    - 기본 생성자가 없고 입력을 1개 받는 생성자가 있을 때, MyClass obj;는 자동으로 입력 1개인 생성자를 호출하려고 시도합니다. 하지만 이 경우, 디폴트 값을 사용하지 않으면 컴파일러가 해당 생성자에 대한 인자를 제공하지 않아서 오류가 발생합니다.
+    - 기본 생성자 호출은 괄호 생략
+    ```c++
+    MyClass obj;
+    ```
+- 포인터변수 동적할당
+    -  delete ptr;은 ptr이 가리키던 힙 메모리를 해제합니다. 이때 ptr은 이제 힙 메모리를 가리키지 않게 됩니다. 하지만 `ptr 자체는 여전히 존재하고, 다른 주소를 가리킬 수 있습니다.`
+    - ptr = &obj;처럼 ptr에 새로운 스택 메모리 주소를 할당할 수 있습니다. 이때 ptr은 더 이상 해제된 힙 메모리를 가리키지 않고, 스택에 존재하는 obj 객체의 주소를 가리킵니다.
+    ```c++
+    MyClass* ptr = new MyClass(12);  //힙 메모리
+    ptr->showMyClass();
+    printf("value: %d\n", ptr->value);
+    delete ptr;
+
+    MyClass obj;    //스택 메모리
+    ptr = &obj;
+    ptr->showMyClass();
+    printf("value:%d\n", ptr->value);
+    ```
+
+- 10-2 단항연산자 오버로딩 [c++](./day35/prac_operator.cpp)
+    ```c++
+    // 단항연산자오버로딩
+    // 전위 연산자 (pre-increment)
+    Point operator++() {
+        ++x;
+        ++y;
+        return *this;  // 증가된 값을 반환
+    }
+
+    // 후위 연산자 (post-increment)
+    Point operator++(int) {
+        Point temp = *this;  // 현재 값을 저장
+        x++;
+        y++;
+        return temp;  // 증가되기 전의 값을 반환
+    }
+
+    int main(void) {
+        Point p(2, 4);
+    std::cout << p << std::endl;         // 2,4
+        std::cout << ++p << std::endl;   // 3,5      p.operator++() 호출됨
+        std::cout << p++ << std::endl;   // 3,5      p.operator++(10) 호출됨
+        std::cout << p << std::endl;     // 4,6
+
+        return 0;
+    }
+    ```
+
+    
+- 07 상속
+    - class 자식클래스명 : public 부모클래스명{};
+    - 자식클래스 생성자에서 부모클래스 생성자 이니셜라이져 호출
+    - is a (무엇은 무엇이다) , has a (소유) 관계
+    - 부모클래스, 기초(base) 클래스 , 상위클래스 , 슈퍼클래스
+    - 자식클래스, 유도(derived) 클래스 , 하위클래스 , 서브클래스
+    1. 자식클래스의 객체 생성과정
+        - 유도클래스의 객체생성 과정에서 기초 클래스의 생성자는 100% 호출된다.
+        - 유도클래스의 생성자에서 기초 클래스의 생성자 호출을 명시하지 않으면, 기초 클래스의 void생성자가 호출된다.
+        ```c++
+        class Human{
+        private:
+            char name[20];
+            int age;
+        public:
+            Human(const char* , int);
+        };
+
+        class Student :public Human {
+        private:
+            int studentId;
+        public:
+            Student (const char*, int, int);
+        }
+
+        Human::Human(const char* aname, int aage){
+            strcpy(name, aname);
+            age= aage;
+        }
+        Student::Student (const char* aname, int aage, int studentId) : Human(aname, aage){
+            this->studentId = studentId;
+        }
+        ```
+        - 할아버지 -아빠 -자식 관계에서의 상속 [C++](./day35/inherit3.cpp)
+
+    2. 유도클래스 객체의 소멸과정 [c++](./day35/inherit4.cpp)
+        - 유도 클래스의 소멸자가 실행되고 난 다음에 기초클래스의 소멸자가 실행된다
+        - 스택에 생성된 객체의 소멸순서는 생성순서와 반대이다.
+        ```c++
+        class SuperClass {
+        private:
+            int num;
+        public:
+            SuperClass(int n) : num(n) { std::cout << num << "SuperClass constructor" << std::endl; }
+            ~SuperClass() { std::cout << num << "SuperClass Destructor" << std::endl; }
+
+        };
+
+        class SubClass : public SuperClass {
+        private:
+            int subNum;
+        public:
+            SubClass(int n, int sn) : SuperClass(n), subNum(sn) { std::cout << subNum << "SubClass Constructor" << std::endl; }
+            ~SubClass() { std::cout << subNum << "SubClass Destructor" << std::endl; }
+        public:
+        };
+        int main(void) {
+            SuperClass super(100);
+            SubClass sub(200, 400);
+            return 0;
+        }
+        ```
+        <img src='./images/상속소멸과정.png'>
+
+    
+- 08 상속과 다형성
+- 08-1 객체 포인터 + 동적할당
+    - 객체의 주소 값을 저장하는 포인터 변수
+    - AAA형 포인터 변수는 AAA형 객체 또는 AAA를 직접 혹은 간접적으로 상속하는 모든 객체를 가리킬 수 있다.
+    ```c++
+    /*
+	객체 동적 생성
+    */
+
+    #include <iostream>
+
+    class AClass {
+    public:
+        void showAClass() {
+            std::cout << " Dynamically created object " << std::endl;
+        }
+    };
+
+    int main(void) {
+
+        AClass* ptr = new AClass();			//객체 동적 할당. 힙영역
+        ptr->showAClass();
+        delete ptr;
+
+        return 0;
+    }
+    ```
+
+    - 객체 포인터 초기화 nullptr
+    ``` c++
+    #include <iostream>
+
+    class MyClass {
+
+    public:
+        void show() {
+            std::cout << "hello" << std::endl;
+        }
+    };
+    int main(void) {
+
+        MyClass* ptr = nullptr;
+        //printf("ptr: %d\n", ptr);    //%d은 int형식의 인수필요하지만 ptr은 MyClass * 이다.
+        
+        
+        if (ptr != nullptr) {
+            ptr->show();
+        }
+        else {
+            printf("ptr is null\n");
+        }
+
+        ptr = new MyClass();
+        ptr->show();
+        return 0;
+    }
+    ```
