@@ -1,0 +1,106 @@
+0. 동적할당해서 생긴  포인터변수는 동적해제 되면 힙메모리를 가리키는 것은 사라지지만 변수선언해서 스택메모리를 가리킬 수 있다.
+
+   기본생성자, 입력이 1개인 생성자오버로딩(디폴트값있는경우)  동시에 존재할 경우, 기본생성자가 2개라고 에러난다.
+   기본생성자 없이 입력이 1개인 생성자 오버로딩(디폴트값있는경우)만 있을 때, AClass a;는 입력1개생성자를 호출한다.
+   기본생성자 호출은 괄호생략한다.
+
+1. 단항연산자 오버로딩
+               전위                   후위
+함수정의   operator++(){}      operator++(int){}
+함수호출   ++a				a++
+		a.operator++()       a.operator++(10)
+
+2. 상속
+부모클래스   기초클래스(base)     슈퍼클래스
+자식클래스   유도클래스(derived)	서브클래스
+
+class Student : public Human{
+private: 
+	int studentId;
+public:
+	Student(int age, int studentId, const char* name) : Human(name, age){		//부모클래스생성자 호출
+		this->studentId = studentId;
+	}
+}
+
+자식클래스생성과정에서 부모클래스의 생성자 100퍼센트 호출된다.
+자식클래스생성자에서 부모클래스 호출을 명시하지 않으면 부모클래스 void생성자가 호출된다.
+
+2-2. 객체생성 및 소멸 과정
+int main(void){
+	Human h("홍길동", 15);
+	Student s(15,2021548,"강산해");
+	
+}
+
+Human h 생성
+Student s의 부모클래스 (강산해, 15) 생성
+Student s의 자식클래스 (2021548) 생성 
+Student s의 자식클래스 (2021548) 소멸
+Student s의 자식클래스 (2021548) 소멸
+Student s의 부모클래스 (강산해, 15)  소멸
+
+
+3. 객체포인터 + 동적할당
+Human* ptr = nullptr;
+ptr =  new Human("홍길동", 15);
+ptr->showData();
+ptr->age;
+delete ptr;
+
+객체의 주소값을 저장하는 포인터 변수
+aaa형포인터 변수는 aaa형 객체 또는 직접, 간접적으로 상속하는 모든 객체를 가리킬 수 있다
+
+3-0. 함수오버라이딩
+오버라이딩 된 기초 클래스의 함수는, 오버라이딩을 한 유도클래스의 함수에 가려진다.
+
+3-1. 업캐스팅 -  부모클래스타입의 포인터변수로 자식클래스타입을 가리킴
+Human * ptr = new Student(15,2021548,"강산해");    // Human클래스 멤버에만 접근가능
+*업캐스팅, 다운캐스팅의 경우 포인터변수의 형의 클래스 멤버에만 접근가능
+
+3-2. 다운캐스팅- 명시적형변환이 필요하다.
+Student* sptr = (Student*) new Human("홍길동",15);	//Student클래스 멤버에만 접근가능
+*업캐스팅, 다운캐스팅의 경우 포인터변수의 형의 클래스 멤버에만 접근가능
+
+4. 추상클래스, 가상함수
+업캐스팅 시, 자식클래스에서 함수오버라이딩된 것에 접근하기 위해서 
+
+4-1. 추상클래스
+객체생성할 수 없다.
+상속된 자식클래스에서 추상메서드 재정의(오버라이딩) 및 객체생성한다.
+순수가상함수1개이상 가지는 클래스이다.
+
+4-2. 가상함수 
+자식클래스에서 함수오버라이딩을 하도록 함
+
+부모클래스에서는 virtual키워드를 사용하여 만든다. 
+virtual void getData(){}
+
+자식클래스에서는 함수오버라이딩을 함
+virtual void getData() override {}
+
+4-3. 순수가상함수
+함수몸체없이 선언만 있다.
+virtual void getData() const = 0;	
+=0은 몸체가 없다는 것을 알리기 위한 표시일 뿐이다.
+
+4-4. 가상소멸자
+업캐스팅이 일어날 때, 동적할당 해제 시, 기초클래스는 해제되지만 유도클래스는 해제되지 않아 메모리 누수가 발생하는데 이를 막기 위해서이다.
+
+기초클래스의 소멸자에 virtual을 붙이므로 해결된다.
+virtual ~Human(){}
+
+5. 형변환 연산자
+static_cast<typeid>(expression)
+명시적표현-(typeid)expression
+
+ int i = 100;
+ ch = static_cast<char>(i);   //d
+ ch2 = (char)i;			 //d
+
+
+float f = 3.14; 
+double d = 2.345;
+d = static_cast<double>(f);     //float에서 double로의 변환은 정밀도의 확장이므로 숫자 값은 변하지 않으며 그대로 3.14로 출력됩니다.
+
+std::cout<< typeid(d).name() << std::endl;   //double

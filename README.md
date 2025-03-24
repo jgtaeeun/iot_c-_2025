@@ -1565,7 +1565,7 @@ c++
     - 자식클래스, 유도(derived) 클래스 , 하위클래스 , 서브클래스
     1. 자식클래스의 객체 생성과정
         - 유도클래스의 객체생성 과정에서 기초 클래스의 생성자는 100% 호출된다.
-        - 유도클래스의 생성자에서 기초 클래스의 생성자 호출을 명시하지 않으면, 기초 클래스의 void생성자가 호출된다.
+        - `유도클래스의 생성자에서 기초 클래스의 생성자 호출을 명시하지 않으면, 기초 클래스의 void생성자가 호출된다.`
         ```c++
         class Human{
         private:
@@ -1622,7 +1622,7 @@ c++
         <img src='./images/상속소멸과정.png'>
 
     
-- 08 상속과 다형성
+
 - 08-1 객체 포인터 + 동적할당
     - 객체의 주소 값을 저장하는 포인터 변수
     - AAA형 포인터 변수는 AAA형 객체 또는 AAA를 직접 혹은 간접적으로 상속하는 모든 객체를 가리킬 수 있다.
@@ -1679,3 +1679,278 @@ c++
         return 0;
     }
     ```
+    - 함수 오버라이딩
+        - `함수가 오버라이딩 되면, 오버라이딩 된 기초 클래스의 함수는, 오버라이딩을 한 유도클래스의 함수에 가려진다.`
+    - 업캐스팅
+        - c++컴파일러는 포인터 연산의 가능성 여부를 판단할 때, 포인터의 자료형을 기준으로 판단한다.
+        - 부모는 자식을 가리킬 수 있다.
+        - 상속 관계에서 파생 클래스(Derived Class)의 객체를 부모 클래스(Base Class)의 포인터나 참조로 할당하는 것을 말합니다.
+        - `부모타입의 포인터로 자식타입의 객체를 가리키면 객체가 부모타입으로 업캐스팅 된다.`
+        - `자식 클래스에서 추가된 멤버 함수나 변수에 접근할 수 없게 되고, 부모 클래스에서 정의된 함수나 멤버에만 접근할 수 있게 됩니다.`
+        - 포인터형에 해당하는 클래스에 정의된 멤버에만 접근이 가능하다.
+        ```c++
+        #include <iostream>
+
+        class Base {
+        public:
+            void show() { printf("Base Class!\n"); }
+        };
+
+
+        class Derived : public Base {
+        public:
+            void show() { printf("Derived Class!\n"); }	//함수오버라이딩
+        };
+
+
+        int main(void) {
+            Base* bptr = nullptr;
+            Derived* dptr = nullptr;
+
+            Derived  obj;	//파생클래스 객체
+            dptr = &obj;
+            dptr->show();	//Derived Class!
+                            
+            /*부모와 자식클래스의 타입이 다른데 어떻게 다른 타입의 포인터로 가리킬 수 있을까?*/
+            bptr = &obj;	// 부모타입의 포인터로 자식타입의 객체를 가리키면 객체가 부모타입으로 업개스팅 된다.
+            bptr->show();   //Base Class!
+            return 0;
+        }
+        ```
+    - 다운캐스팅[c++](./day35/objpointer6.cpp)
+        - 다운캐스팅은 컴파일러가 자동으로 해주지 않기 때문에 명시적인 형 변환(casting)이 필요합니다. 
+        - 부모 클래스 타입의 포인터나 참조를 자식 클래스 타입으로 변환
+        ```c++
+        Base bobj;
+    	Derived* dptr = (Derived*) & bobj;
+        ```
+- 08-2 가상함수
+    - 추상클래스
+        - 추상 클래스는 객체를 직접 생성할 수 없는 클래스입니다.
+        - 추상클래스를 상속받은 후손이 클래스 생성할 수 있다.
+        - 추상 클래스는 추상 메서드를 가질 수 있는데, 이 메서드는 자식 클래스에서 반드시 구현해야 합니다.
+    - 가상함수
+        - 파생클래스에서 재정의할 것을 약속받은 멤버함수
+        - Base클래스의 멤버함수에 virtual 키워드를 사용하여 만든다.
+        - virtual table이 만들어지고, dynamic binding으로 동작한다.
+        ```c++
+        class Base {
+
+        public:
+            virtual void func1() { std::cout << "B::func1()" << std::endl; }	//가상함수
+            virtual void func2() { std::cout << "B::func2()" << std::endl; }	//가상함수
+            void func3() { std::cout << "B::func3()" << std::endl; }   // 일반 메서드
+        };
+
+        class Derived : public Base {
+
+        public:
+            virtual void func1() override { std::cout << "D::func1()" << std::endl;}	//가상함수를 재정의하는 멤버함수를 나타남
+           
+           /*
+           func3() 일반 함수는 가상 함수처럼 동적 바인딩이 되지 않기 때문에, 부모 클래스에서 호출된 일반 함수가 자식 클래스에서 호출될 수 없습니다.
+           */
+            void func3() { std::cout << "D::func3()" << std::endl; }  // 일반 메서드			
+            void func4() { std::cout << "D::func4()" << std::endl; }  // 일반 메서드
+        };
+
+        int main(void) {
+            Base b;
+            Derived d;
+            Base* bptr = new Derived();		//객체포인터 동적할당 및 upcasting
+
+            bptr->func1();  //D::func1()			// base클래스의 func1()은 가상함수로 선언되어 derived 클래스의 func1()이 호출된다
+            bptr->func2();	//B::func2()			//base클래스의 func2()은 가상함수로 선언되었지만 오버라이딩이 되지 않았다. 
+            bptr->func3();	//B::func3()			//포인터타입의 호출함수가 결정된다.
+            
+
+            /*func4()는 Base 클래스에 존재하지 않으며, Derived 클래스에서만 정의된 함수입니다.
+             따라서 Base 클래스 포인터인 bptr을 통해서는 func4()를 호출할 수 없습니다. 
+             이 코드 줄은 주석 처리되어 있으며, 만약 호출하려고 한다면 컴파일 오류가 발생할 것입니다.
+            */
+            //bptr->func4();   //Base클래스에 func4()라는 멤버함수가 없다.
+
+            /* delete는 Derived 클래스의 소멸자를 호출하며,
+             Base 클래스의 소멸자도 호출합니다.*/
+            delete bptr;  //기존 동적메모리 힙 영역 삭제
+            bptr = &b;
+            bptr->func1();  //B::func1()
+            bptr->func2();	//B::func2()
+            bptr->func3();	//B::func3()
+            return 0;
+        }
+        ```
+        <img src='./images/base클래스가상함수.png'>
+        <img src='./images/derived클래스가상함수.png'>
+
+        - 객체 포인터의 다형성으로 기초 클래스 타입의 포인터로 파생클래스의 객체를 가리키면 접근은 기초클래스 멤버로 제한된다. (upcasting)
+        - 오버라이딩된 파생 클래스의 멤버를 사용하기 위해서는 기초클래스의 멤버함수를 가상함수로 만들면 된다.
+        - 컴파일시 포인터형으로 바인딩되지 못하고 런타임에서 포인터가 어떤 객체를 가리키고 있는지에 따라서 바인딩할 함수를 결정한다.
+        <img src='./images/가상함수.png'>
+    - 순수 가상함수
+        - 함수 몸체가 정의되지 않은 함수
+        - 0의 대입을 표시한다. 이것은 0의 대입을 의미하는 게 아니고, 명시적으로 몸체를 정의하지 않았음을 컴파일러에게 알리는 것이다.
+        - 해당 함수가 반드시 자식 클래스에서 구현되어야 함을 명시하는 함수입니다. 
+        <img src='./images/순수가상함수.png'>
+
+        ```c++
+        
+        #include <iostream>
+
+        class Cinterface {
+        public:
+            Cinterface() { std::cout << "Cinterface constructor" << std::endl; }
+            virtual void getData() const = 0;		// 순수 가상 함수
+
+        };
+
+        class Cinsub : public Cinterface {
+        public:
+
+            Cinsub() { std::cout << "Cinsub constructor" << std::endl; }
+            void getData() const  override { std::cout << "Pure Virtual Function()" << std::endl; }   //순수 가상 함수의 재정의
+        };
+        int main(void) {
+            //Cinterface c;  //Cinterface는 순수 가상 함수가 있기 때문에 추상 클래스입니다. 따라서 Cinterface 클래스 자체는 객체를 생성할 수 없습니다.
+
+            /* 자식클래스 생성자 호출할 경우, 부모클래스 생성자가 생략된 경우, 부모클래스 기본생성자가 호출된다.*/
+            Cinsub c;		//Cinterface constructor
+                            //Cinsub constructor
+
+            c.getData();	//Pure Virtual Function()
+            return 0;
+        }
+        ```
+- 08-3 가상 소멸자와 참조자의 참조가능성 [c++](./day35/virtual3.cpp)
+    - C++에서 객체를 동적으로 할당하고 delete 연산자를 사용하여 메모리를 해제할 때, 부모 클래스 포인터로 자식 클래스 객체를 가리키는 경우, 부모 클래스에 정의된 소멸자만 호출될 수 있습니다. 이 때, 자식 클래스의 소멸자가 호출되지 않으면 자식 클래스에서 할당한 메모리가 해제되지 않아 메모리 누수가 발생할 수 있습니다.
+    - 가상 소멸자를 사용하여 부모 클래스의 포인터로 자식 클래스 객체를 삭제할 때, 부모 클래스의 소멸자가 호출되면서 자식 클래스의 소멸자도 자동으로 호출되도록 해야 합니다.
+    - 가상함수와 마찬가지로 소멸자도 상속의 계층 구조상 맨 위에 존재하는 기초 클래스의 소멸자만 virtual로 선언하면, 이를 상속하는 유도 클래스의 소멸자들도 모두 가상 소멸자로 선언이 된다. 
+    - 가상소멸자가 호출되면 , 상속의 계층구조상 맨 아래에 존재하는 유도클래스의 소멸자가 대신 호출되면서, 기초 클래스의 소멸자가 순차적으로 호출된다.
+
+    ```c++
+    #include <iostream>
+
+    class CTest {						//클래스명 대문자
+    private:							//멤버변수 private, 멤버함수 public
+        int num;
+    public:
+        //입력이 1개인 생성자 오버로딩 및 이니셜라이져
+        CTest(int anum) : num(anum) { std::cout << num <<"CTest constructor" << std::endl; }
+
+        //가상함수 
+        virtual void vfunc() {
+            std::cout << "CTest virtual Function()" << std::endl;
+        }
+
+        //일반함수
+        void func() {
+            std::cout << "CTest function()" << std::endl;
+        }
+
+        virtual ~CTest(){					//가상소멸자
+            std::cout << num << "CTest destructor" << std::endl;
+        }
+
+        
+    };
+
+    // 상속
+    class CTestSub : public CTest{
+    private:
+        int num2;
+    public:
+        //입력이 2개인 생성자 오버로딩 및 부모객체생성자 이니셜라이져 
+        CTestSub(int anum1, int anum2) : CTest(anum1), num2(anum2) { std::cout << num2 << "CTestSub constructor" << std::endl; }
+
+        //가상함수 오버라이딩
+        void vfunc() override {
+            std::cout << "CTestSub Virtual Function Overriding " << std::endl;
+        }
+
+        
+        ~CTestSub() {
+            std::cout << num2 << "CTestSub destructor" << std::endl;
+        }
+    };
+
+    int main(void) {
+        CTest* ptr = new CTestSub(3, 33);		//객체포인터 동적할당 및 업캐스팅
+        ptr->func();   //Ctest의 func()
+        ptr->vfunc();  // CTestSub의 vfunc()
+        delete ptr;		//33 CTestSub destructor이 이뤄지지 않음!!!!(문제해결필요) => CTest의 소멸자 앞에 virtual 적는다.
+        return 0;
+    }
+    ```
+    <img src='./images/가상소멸자.png'>
+
+- 16-1 형변환 연산자
+    - static_cast<type-id> (expression)
+    ```c++
+    #include <iostream>
+
+    int main(void) {
+        char ch;
+        int i = 100;
+        float f = 3.14;
+        double d = 2.345;
+
+        ch = static_cast<char>(i);
+        std::cout << ch << std::endl;    //아스키 코드 100 <=> d
+        ch = (char)i;					//명시적 형변환
+        std::cout << ch << std::endl;
+
+        d = static_cast<double>(f);     //float에서 double로의 변환은 정밀도의 확장이므로 숫자 값은 변하지 않으며 그대로 3.14로 출력됩니다.
+        std::cout << d<< std::endl;
+
+        //큰자료형을 작은자료형으로 변환시 데이터가 잘라짐.주의필요
+        i = static_cast<int>(d);
+        std::cout << i << std::endl;
+
+        std::cout<< typeid(ch).name() << std::endl;   //char
+        std::cout << typeid(d).name() << std::endl;		//double
+        return 0;
+    }
+    ```
+    - 업캐스팅, 다운캐스팅의 경우 포인터변수의 형의 클래스 멤버에만 접근가능
+    ```c++
+    #include <iostream>
+
+
+    class Base {
+    public:
+        void func1() { std::cout << "Base::func1()" << std::endl; }
+        
+    };
+
+    class Derived : public Base {
+    public:
+        void func() { std::cout << "Derived::func()" << std::endl; }
+        void func1() { std::cout << "Derived::func1()" << std::endl; }
+
+    };
+
+    class Derived2 : public Derived {
+    public:
+        void func() { std::cout << "Derived2::func()" << std::endl; }
+        void func1() { std::cout << "Derived2::func1()" << std::endl; }
+    };
+    int main(void) {
+        Base* bptr;
+        Derived obj;
+        bptr = static_cast<Base*>(&obj);	//업캐스팅 
+        bptr->func1();		//부모클래스의 멤버에만 접근가능
+        
+        Base obj2;
+        Derived* dptr;
+        dptr = static_cast<Derived*>(&obj2);	//다운캐스팅
+        dptr->func();	//자식클래스Derived의 멤버에만 접근가능
+        dptr->func1();
+
+        Derived2* d2ptr = static_cast<Derived2*>(dptr);	//다운캐스팅
+        d2ptr->func();	//자식클래스Derived2의 멤버에만 접근가능
+        d2ptr->func1();
+        return 0;
+    }
+    ```
+## 36일차(3/25)
+- 16-1.형변환 연산자

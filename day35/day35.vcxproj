@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="objpointer6.cpp" />
     <ClCompile Include="inherit.cpp" />
     <ClCompile Include="inherit2.cpp" />
     <ClCompile Include="inherit3.cpp" />
@@ -135,8 +136,14 @@
     <ClCompile Include="objpointer2.cpp" />
     <ClCompile Include="objpointer3.cpp" />
     <ClCompile Include="objpointer4.cpp" />
+    <ClCompile Include="objpointer5.cpp" />
     <ClCompile Include="prac_copyconstructor.cpp" />
     <ClCompile Include="prac_operator.cpp" />
+    <ClCompile Include="static_cast.cpp" />
+    <ClCompile Include="static_cast2.cpp" />
+    <ClCompile Include="virtual.cpp" />
+    <ClCompile Include="virtual2.cpp" />
+    <ClCompile Include="virtual3.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
