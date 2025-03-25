@@ -1953,4 +1953,724 @@ c++
     }
     ```
 ## 36일차(3/25)
+- 동적할당 괄호와 중괄호
+    - 두 가지 방법 모두 동작합니다. int* ip = new int(10);와 int* ip = new int{10}; 모두 10으로 값을 초기화합니다.
+    - 하지만 중괄호 {} 초기화는 C++11 이후 더 안전하고 명확한 초기화 방식으로 권장됩니다. 특히 값이 초기화되지 않거나 의도치 않게 0으로 초기화되는 문제를 방지할 수 있습니다.
+- 가상소멸자는 가상함수의 일종
+    - C++에서 가상 함수는 virtual 키워드를 사용하여 선언된 함수로, 이를 통해 다형성을 지원합니다. 가상 소멸자도 이와 동일하게 동작하며, 상속 관계에서 동적 바인딩을 사용하여 객체가 삭제될 때 적절한 소멸자가 호출될 수 있도록 합니다.
+- 가상함수 
+    - 업캐스팅, 다운캐스팅의 경우 포인터변수의 형의 클래스 멤버에만 접근가능을 해결하기 위해서는 가상함수 필요하다.
+    ```c++
+    Super* stpr2 = new Sub();	
+    Sub* subptr = dynamic_cast<Sub*>(stpr2);
+    if (subptr != nullptr) {
+        //sub클래스의 멤버에만 접근할 수 있다.
+        subptr->func();         
+        subptr->func1();    //Super 클래스의 func1()을 상속받고, 별도로 오버라이딩하지 않아도 Super 클래스의 func1()을 사용할 수 있습니다.
+        subptr->func2();
+        subptr->fx();
+    }
+    ```
+    ```c++
+     //Super클래스의 멤버에만 접근할 수 있다.
+    Super* sptr = new Super();
+    sptr->func();
+    sptr->func1();
+    sptr->fx();
+    ```
+- 이동생성자
+    - 이동 생성자는 r-value 참조(&&)를 파라미터로 받는다.
+    - 사용자가 이동 생성자를 정의하지 않으면 컴파일러가 기본 이동 생성자를 자동으로 생성
+    ```c++
+    private:
+	    int a;
+    public :
+        Human(int a) {         //생성자
+            this->a =a;
+        }
+        Human(const Human& other){   //복사생성자
+            this->a = other.a; 
+        }
+
+        Human(const Human&& other) noexcept{  //이동생성자
+            this->a = other.a;
+        }
+
+    int main(void){
+        Human h1(10);
+        Human hcopy(h1);
+        Human hmove(std::move(h1));
+        return 0;
+    }
+    ```
+
+
+
 - 16-1.형변환 연산자
+    - 형변환 연산 컴파일에러의 경우
+        - 다운캐스팅의 경우, 주의가 필요하다.
+        <img src='./images/형변환안전한경우와아닌경우.png'>
+    - dynamic_cast
+        - 업캐스팅 [c++](./day36/dynamic_cast.cpp)
+            - 다운캐스팅에서 주로 사용되지만, 업캐스팅에서도 안전성을 보장하는 방식으로 사용할 수 있습니다.
+        - 다운캐스팅
+            - 가상 함수(virtual functions)가 포함된 클래스 계층에서만 제대로 동작
+            - 다운캐스팅 지원(부모 클래스를 자식 클래스로 형변환할 때 사용됩니다.)
+            - 잘못된 형변환이 일어날 경우 nullptr을 반환하여, 오류를 방지할 수 있습니다.
+            - dynamic_cast는 런타임에 타입을 검사하여 형변환이 가능한지 확인합니다. 이를 통해, 잘못된 형변환을 피할 수 있습니다.
+            - **dynamic_cast는 정확한 객체 타입을 알고 있을 때만 작동합니다. 즉, 부모 클래스 포인터가 실제로 자식 클래스 객체를 가리키고 있어야만 다운캐스팅이 성공합니다. 그렇지 않으면 dynamic_cast는 nullptr을 반환하게 됩니다.**
+        ```c++
+        #include <iostream>
+
+        class Base {
+        public:
+            virtual ~Base() {}  // 가상 소멸자를 추가해야 dynamic_cast가 동작함
+        };
+
+        class Derived : public Base {
+        public:
+            void foo() {
+                std::cout << "Derived class" << std::endl;
+            }
+        };
+
+        int main() {
+            Base* b = new Derived(); // Base 클래스 타입으로 Derived 객체 생성
+
+            // dynamic_cast를 사용하여 다운캐스팅 시도
+            Derived* d = dynamic_cast<Derived*>(b);
+
+            if (d) {
+                d->foo();  // 성공적으로 다운캐스팅 된 경우  
+            }
+            else {
+                std::cout << "Cast failed!" << std::endl;  // 다운캐스팅 실패
+            }
+
+            delete b;
+            return 0;
+        }
+        ```
+        - 다운캐스팅 실패의 이유
+            - 객체의 실제 타입이 부모 클래스 타입이고, 그 부모 클래스 객체를 자식 클래스 타입으로 변환하려고 했기 때문입니다.
+            ```c++
+            Super* stpr = new Super();  // 부모 객체
+            Sub* subptr = dynamic_cast<Sub*>(stpr);  // 실패, subptr은 nullptr
+            ```
+    - static_cast
+        - 정적 형 변환: 컴파일 시간에 타입을 변환합니다.
+        - 강력한 타입 체크: 타입 변환이 컴파일 타임에 검증되므로, 잘못된 타입 변환은 컴파일 에러를 발생시킵니다.
+        - 상속 관계에서의 변환: 상속 관계가 있는 클래스 간에서 업캐스팅과 다운캐스팅을 할 때 사용됩니다. 업캐스팅은 안전하지만, 다운캐스팅은 조심해야 합니다. 실제 객체 타입과 캐스팅된 타입이 일치하지 않으면 정의되지 않은 동작을 초래할 수 있습니다.
+        - 문자열 리터럴과 포인터 변환: static_cast는 정확한 타입 변환을 요구하므로, 서로 다른 타입 간 변환 시 안전하지 않거나, 컴파일 에러가 발생할 수 있습니다.
+        1. 업캐스팅 + 가상함수
+        ```C++
+        #include <iostream>
+
+        class Base {
+        public:
+            virtual void show() { std::cout << "Base class\n"; }
+        };
+
+        class Derived : public Base {
+        public:
+            void show() override { std::cout << "Derived class\n"; }
+        };
+
+        int main() {
+            Derived d;
+            Base* basePtr = static_cast<Base*>(&d);  // Derived -> Base (업캐스팅)
+            basePtr->show();  // 출력: Derived class
+            return 0;
+        }
+
+        ```
+        2. 다운캐스팅
+        ```C++
+        #include <iostream>
+
+        class Base {
+        public:
+            virtual void show() { std::cout << "Base class\n"; }
+        };
+
+        class Derived : public Base {
+        public:
+            void show() override { std::cout << "Derived class\n"; }
+            void derivedMethod() { std::cout << "Method in Derived class\n"; }
+        };
+
+        int main() {
+            Base* basePtr = new Derived();
+            Derived* derivedPtr = static_cast<Derived*>(basePtr);  // Base -> Derived (다운캐스팅)
+            derivedPtr->show();  // 출력: Derived class
+            derivedPtr->derivedMethod();  // 출력: Method in Derived class
+            delete basePtr;
+            return 0;
+        }
+
+        ```
+        3. 배열과 포인터 간의 변환
+        ```c++
+        #include <iostream>
+
+        int main() {
+            int arr[] = {1, 2, 3, 4};
+            int* p = static_cast<int*>(arr);  // 배열 포인터로 변환
+            std::cout << "First element: " << *p << std::endl;  // 출력: First element: 1
+            return 0;
+        }
+        ```
+    - const_cast
+        - 상수 객체나 상수 포인터를 비상수로 변경하는 데 사용
+        - const로 선언된 변수나 포인터의 상수성 속성을 제거하거나, 반대로 비상수 포인터를 상수 포인터로 변환하는 데 사용될 수 있습니다.
+        1. C++ 컴파일러는 const로 선언된 변수는 변경되지 않는다고 가정하고, 해당 변수를 메모리 상에서 최적화할 수 있습니다.
+            이 경우, const_cast로 상수성만 제거한 후 값을 변경하려고 하면, 실제 메모리에서 값이 변경되지 않거나, 잘못된 동작을 일으킬 수 있습니다.    
+            [c++](./day36/const_cast2.cpp) [c++](./day36/const_cast2_2.cpp)
+            ```c++
+            #include <iostream>
+            int main(void) {
+                const int num2 = 10;
+                //std::cout << ++num2 << std::endl;   //const는 상수이다. lvalue여야하는데 아니기에 에러난다.
+
+            /*
+            * const_cast 예외: 잘못된 사용
+            상수 객체 num2의 값을 변경하려고 하므로 정의되지 않은 동작을 유발합니다.
+            num2이 상수로 선언되어 있기 때문에 컴파일러가 이를 최적화할 수도 있으며, 프로그램이 예상대로 동작하지 않을 수 있습니다.
+            */ 
+            
+                int* np = const_cast<int*>(&num2);
+                *np += 1;     //num2를 바꾸는 것은 상수기에 불가능하다.
+                std::cout << num2 << std::endl;   //10
+                return 0;
+            }
+            ```
+        2. const 멤버함수 내에서는 멤버 변수의 값을 변경할 수 없다.
+            ```c++
+            #include <iostream>
+
+            class MyClass {
+            private:
+                int num;
+            public:
+                void setNum(int n) { num = n; }
+              
+                void print() const { 
+                    std::cout << "Before: " <<num << std::endl;  
+                    //num++     //const 함수는 함수내에서 값변경할 수 없다.
+                    const_cast<MyClass*>(this)->num--;
+                    std::cout << "After: " << num << std::endl;
+                }
+            };
+
+            int main() {
+
+                MyClass obj;
+                obj.setNum(10);
+                obj.print();
+
+                return 0;
+            }
+            ```
+            <img src='./images/const_cast비상수화.png'>
+            - 코드에서 const_cast를 사용하여 this 포인터를 const에서 비상수 포인터로 변환하고, num을 수정하는 방식으로 이를 우회하고 있습니다.
+            - const_cast는 상수성 제거를 목적으로 사용되지만, 상수 객체의 값을 변경하는 것은 일반적으로 권장되지 않으며, 안정적이지 않습니다.
+            - const_cast를 사용하여 const 함수 내에서 상수 객체의 상태를 수정하는 방법을 보여주고 있지만, 이러한 접근은 안전하지 않으므로 권장되지 않습니다. 
+            - const 함수는 가능한 한 상수 객체를 변경하지 않도록 작성하는 것이 좋습니다.
+    
+    - reinterpret_cast
+        - 포인터->포인터, 포인터->변수, 변수->포인터로 하는 주로 포인터 관련 연산자
+        - 메모리 주소를 다른 타입으로 변환하는 데 사용되며, 포인터를 비트 단위로 재해석하는 방식입니다.
+        - 이 방식은 메모리 주소를 다루는 작업에서 주로 사용되며, 타입의 크기나 해석 방법에 따라 예기치 않은 동작을 초래할 수 있습니다.
+        - reinterpret_cast는 포인터 변환을 위한 매우 저수준의 연산자이므로 신중하게 사용해야 합니다.
+        ```c++
+        #include <iostream>
+
+        int main(void) {
+            int* ip = new int{ 10 };
+            long lg = reinterpret_cast<long>(ip);   //int* -> long
+            unsigned int ui = reinterpret_cast<int>(ip);//int* -> uint
+
+            printf("ip: %u, lg:%u , ui:%u \n", ip, lg, ui);  //ip: 1230272752, lg:1230272752 , ui:1230272752
+
+
+            //해결필요	- X86로 하기
+            int* p = reinterpret_cast<int*>(lg);
+            int* p1 = reinterpret_cast<int*>(ui);
+            printf("p: %d, p1:%d\n", *p,*p1);
+
+            int* p2 = new int{ 100 };
+            char* pc = reinterpret_cast<char*>(p2);   //int*->char* 
+            printf("pc: %d\n", *pc);
+
+            p2 = reinterpret_cast<int*>(pc);		//char*->int* 
+            printf("p: %d\n", *p2);
+
+
+            return 0;
+        }
+
+        ```
+       <img src='./images/reinterpret_cast실행결과.png'>
+    - 문자열변환
+        1. 문자열 리터럴을 char*로 변환하려고 할 때 (const char*)
+            - 문자열 리터럴은 const char* 타입으로 취급되므로, 이를 **char***로 변환하는 것과 같은 const를 제거하는 변환은 위험하며 컴파일 에러를 발생시킵니다.
+        ```c++
+        #include <iostream>
+
+        int main() {
+            const char* str = "Hello";  // 문자열 리터럴은 const char* 타입입니다.
+            
+            // 올바른 변환: const char*에서 const char*로 변환
+            const char* ptr = static_cast<const char*>(str);
+            std::cout << ptr << std::endl;  // 출력: Hello
+            
+            return 0;
+        }
+        ```
+        2. 문자열 리터럴을 std::string으로 변환하려고 할 때
+         - std::string으로의 변환은 static_cast로는 수행할 수 없고, std::string의 생성자를 사용해야 합니다.
+        ```c++
+       #include <iostream>
+        #include <string>
+
+        int main() {
+            const char* str = "Hello";
+
+            // std::string은 const char*에서 직접 초기화 가능
+            std::string strObj = str;  // 생성자를 사용하여 변환
+
+            std::cout << strObj << std::endl;  // 출력: Hello
+
+            return 0;
+        }
+
+
+        ```
+- 이름없는 임시객체 [c++](./day36/tempobj.cpp)
+    - 이름없는 임시객체를 변수에 저장하지 않으면 다음명령실행 시 바로 사라진다.
+    - 소멸자는 마지막행까지 실행된 후에 실행된다.
+    - 이름없는 임시객체는 포인터변수 , 참조할 수 없다. (lvalue가 아니므로)  [c++](./day36/tempobj2.cpp)
+
+    1. rvalue참조는 const가 아니기에 데이터변경할 수 있다. [c++](./day36/tempobj2.cpp)
+    ```c++
+    MyClass&& obj2 = MyClass{ 46 };		//이름없는객체를 rvlaue참조
+	obj2.setData(22);
+
+    const MyClass& obj3 = MyClass{ 100 };  //이름없는객체를 상수const참조
+    //obj3.setData()불가, obj3은 상수참조이기에 값변경할 수 없다.
+    ```
+    2. 이름없는 임시객체의 생성과 소멸  [c++](./day36/tempobj1.cpp)
+    <img src ='./images/이름없는임시객체의생성과소멸.png'>
+    3. 매개변수가 참조일 때, 객체일 때 + 이름없는객체 [c++](./day36/tempobj3.cpp)[c++](./day36/tempobj3_2.cpp)
+    <img src ='./images/매개변수객체일때.png'>
+    <img src ='./images/매개변수참조일때.png'>
+    
+- 상수와 리터럴 상수
+    - 리터럴 상수
+    ```c++
+    //리터럴 상수- 값변경불가
+
+    // const 참조
+    const int& ref = 10;
+    std::cout << ref << std::endl;
+    // 참조해도 값변경 불가
+    //ref = 20;
+
+    // 주소를 참조하려는 시도는 불가능합니다.
+    int* ptr = &10; 
+    return 0;
+    ```
+    - 상수
+    ```c++
+    //const 상수- 값변경불가
+
+	const int a = 10;
+
+	const int& ref = a;
+	//값변경불가
+	//ref = 20;
+
+
+	const int* p = &a;
+	//값변경불가
+	//*p = 20;
+    ```
+    <img src='./images/상수와리터럴상수.png'>
+
+- 스마트 포인터 unique_ptr
+    - 주로 동적 메모리 할당을 관리하고 메모리 누수를 방지하는 데 사용됩니다
+    1. 소유권
+        - unique_ptr는 동적 메모리의 소유권을 유일하게 가집니다. 하나의 unique_ptr만이 특정 객체를 소유할 수 있습니다. 
+        - 다른 unique_ptr가 그 객체를 소유하게 되면, 소유권이 이동해야 합니다.
+        - 이 소유권이 이동되면 원래의 unique_ptr는 더 이상 객체를 소유하지 않으며, 자동으로 nullptr이 됩니다. 이때 객체가 중복으로 삭제되지 않도록 관리됩니다.
+    2. 소멸 시 자동 해제
+        - unique_ptr는 객체가 더 이상 필요 없을 때 자동으로 객체를 삭제합니다. 
+        - 즉, unique_ptr가 범위를 벗어나거나 소멸될 때, 해당 객체의 소멸자가 자동으로 호출됩니다. 
+
+    - move와 unique_ptr
+        - move(ptr)를 사용하면 ptr의 소유권이 이동되고, ptr은 더 이상 해당 객체를 소유하지 않게 됩니다.
+        - 이때 객체는 새로 생성되지 않으며, 원래의 객체가 그대로 이동합니다.
+        ```c++
+        #include <iostream>
+        using namespace std;
+
+        class MyClass {
+
+        public:
+            MyClass() { std::cout << "생성자" << std::endl; }
+            ~MyClass() { std::cout << "소멸자" << std::endl; }
+        };
+
+        int main(void) {
+
+            unique_ptr<MyClass> ptr(new MyClass{});
+            unique_ptr<MyClass> ptr2 = move(ptr);   //ptr의 소유권을 ptr2로 이동시킵니다. 즉, ptr은 이제 nullptr이 되고, ptr2가 이 객체를 소유하게 됩니다.
+            
+            return 0;
+        }
+        ```
+- 스마트 포인터 shared_ptr
+    - 여러 개의 포인터가 같은 객체를 공유할 수 있게 해주는 스마트 포인터입니다.
+
+    1. 참조 카운팅 (Reference Counting)
+        - 여러 shared_ptr 객체가 하나의 객체를 가리킬 수 있습니다. 각 shared_ptr는 객체를 참조할 때마다 참조 카운트를 증가시키고, shared_ptr가 범위를 벗어나거나 소멸될 때 참조 카운트를 감소시킵니다.
+        - 참조 카운트가 0이 되면, 즉 더 이상 해당 객체를 참조하는 shared_ptr가 없을 때, 객체는 자동으로 삭제됩니다.
+    2. 자동 메모리 관리
+        - shared_ptr는 동적으로 할당된 객체에 대한 메모리 관리 책임을 자동으로 집니다. 객체가 더 이상 필요 없을 때 자동으로 소멸시켜 메모리 누수를 방지합니다.
+    3. 복사 가능 (Copyable)
+        - shared_ptr는 객체의 소유권을 복사할 수 있습니다. 객체의 소유권을 복사하면 참조 카운트가 증가하고, 소멸 시 참조 카운트가 감소합니다. 
+    ```c++
+    //make_shared : 객체와 참조 카운트를 하나의 메모리 블럭에 같이 할당시킨다. /shared_ptr을 생성하는 함수
+    #include <iostream>
+
+    class MyClass {
+
+    public:
+        MyClass() { std::cout << "생성자" << std::endl; }
+        ~MyClass() { std::cout << "소멸자" << std::endl; }
+        void func(){ std::cout << "shared_ptr" << std::endl; }
+    };
+
+    int main(void) {
+        std::shared_ptr<MyClass> ptr = std::make_shared<MyClass>();
+        std::shared_ptr<MyClass> ptr2 = ptr;
+        std::cout << "ptr과  ptr2는 동일한 객체를 가리킨다. 공유한다." << std::endl;
+
+        return 0;
+    }
+
+    ```
+- 스마트 포인터 weak_ptr
+    - 주로 순환 참조(circular reference) 문제를 해결하기 위해 사용됩니다.
+    - 객체가 더 이상 필요하지 않으면, 자동으로 삭제되지 않도록 합니다.
+    1. 소유하지 않음
+        - weak_ptr는 객체에 대한 소유권을 갖지 않습니다. 대신, 객체가 여전히 유효한지를 추적할 수 있는 기능만 제공합니다. 
+        - 즉, weak_ptr는 객체의 참조 카운트를 증가시키지 않기 때문에, 해당 객체가 소멸할 때 weak_ptr는 아무런 영향을 미치지 않습니다.
+    2. 순환 참조 해결
+        - shared_ptr끼리 순환 참조가 발생하면, 참조 카운트가 0이 되지 않아서 메모리 누수 문제가 발생할 수 있습니다. weak_ptr는 이 문제를 해결할 수 있습니다. 
+    3. 유효성 검사
+        - weak_ptr는 객체가 여전히 유효한지를 lock() 메서드를 통해 확인할 수 있습니다.
+        - lock()은 shared_ptr를 반환하며, 이때 객체가 이미 소멸되었으면 nullptr을 반환합니다. 
+
+    ```c++
+    #include <iostream>
+    #include <memory>
+
+    class MyClass {
+    public:
+        MyClass() { std::cout << "생성자 호출" << std::endl; }
+        ~MyClass() { std::cout << "소멸자 호출" << std::endl; }
+    };
+
+    int main() {
+        // shared_ptr 생성
+        std::shared_ptr<MyClass> ptr1 = std::make_shared<MyClass>();
+
+        // weak_ptr 생성: ptr1을 참조하되 소유하지 않음
+        std::weak_ptr<MyClass> weakPtr = ptr1;
+
+        // weak_ptr에서 shared_ptr을 얻기 위해 lock() 사용
+        std::shared_ptr<MyClass> ptr2 = weakPtr.lock();
+
+        if (ptr2) {
+            std::cout << "ptr2는 유효한 객체를 참조합니다." << std::endl;
+        }
+
+        // ptr1을 범위를 벗어나게 하면 객체가 소멸되고, weakPtr은 더 이상 유효하지 않음
+        ptr1.reset(); // 참조 카운트가 0이 되어 객체가 소멸됨
+
+        // 다시 weakPtr에서 lock()을 사용하면 nullptr이 반환됨
+        ptr2 = weakPtr.lock();
+
+        if (!ptr2) {
+            std::cout << "ptr2는 더 이상 유효한 객체를 참조하지 않습니다." << std::endl;
+        }
+
+        return 0;
+    }
+
+    ```
+    <img src='./images/weak_ptr실행결과.png'>
+
+    - 순환참조 shared_ptr [c++](./day36/weak_ptr2.cpp)
+        ```c++
+        #include <iostream>
+
+        class MyClass {
+
+        public:
+            MyClass() { std::cout << "생성자" << std::endl; }
+            ~MyClass() { std::cout << "소멸자" << std::endl; }
+            void func(){ std::cout << "weak_ptr" << std::endl; }
+        };
+
+        int main(void) {
+            std::shared_ptr<MyClass> ptr = std::make_shared<MyClass>();			//c++14이후부터 지원
+            std::weak_ptr<MyClass> weakptr = ptr;
+
+
+            std::shared_ptr<MyClass> ptr2 = weakptr.lock();     //weak_ptr에서 shared_ptr로 변환
+            if (ptr2) { std::cout << "weak_ptr로 변환한 shared_ptr 사용가능 " << std::endl; }
+
+            return 0;
+        }
+        ```
+    - 순환참조 해결하는 weak_ptr  [c++](./day36/weak_ptr2_2.cpp)
+        ```c++
+        #include <iostream>
+        #include <memory>
+
+        struct B;
+
+        struct A {
+            std::shared_ptr<B> b_ptr;  // B 객체를 참조하는 shared_ptr
+        };
+
+        struct B {
+            std::weak_ptr<A> a_ptr;  // A 객체를 참조하는 weak_ptr
+        };
+
+        int main(void) {
+            // A와 B 객체를 생성하고 shared_ptr로 관리
+            std::shared_ptr<A> a(new A());
+            std::shared_ptr<B> b(new B());
+
+            // A 객체의 b_ptr에 B 객체를 참조하도록 설정
+            a->b_ptr = b;
+
+            // B 객체의 a_ptr에 A 객체를 weak_ptr로 참조하도록 설정
+            b->a_ptr = a;
+
+            return 0;
+        }
+        ```
+- STL(Standard Template Library)
+    - 데이터 구조와 알고리즘을 효율적으로 제공하는 라이브러리
+    - 다양한 자료형에 대해 동작하는 템플릿 기반의 클래스와 함수들로 구성되어 있습니다.
+    1. 컨테이너 
+        - 데이터를 저장하고 관리하는 자료구조
+        1. 시퀀스 컨테이너 
+            - 데이터가 순차적으로 저장되며, 요소들이 저장된 순서대로 접근 가능
+            - 인덱스를 사용하거나 반복자를 통해 순차적으로 접근할 수 있습니다.
+        2. 연관 컨테이너 
+            - 데이터를 키-값 쌍으로 저장
+            - 자동으로 정렬되거나 특정 규칙에 따라 데이터를 저장하고 검색할 수 있습니다.
+        3. 컨테이너 어댑터 
+    2. 반복자
+- 시퀀스컨테이너 - 벡터
+    - std::vector와 std::list는 size() 함수를 제공하여 크기를 구할 수 있습니다.
+    - 배열은 size() 함수가 없으며, sizeof 연산자를 사용하여 크기를 구해야 합니다.
+    1. 벡터 초기화 및 size()크기 함수
+    ```c++
+    #include <iostream>
+    #include <vector>
+
+    int main(){
+        std::vector<int> v;
+        std::vector<int> v1{ 10 };
+        std::vector<int> v2 = { 1,2,3,4,5 };
+        std::vector<int> v3(5);   //벡터의 크기를 지정 , 기본값 초기화는 int처럼 기본 타입의 경우 0
+
+        // vector의 크기 .size()
+        std::cout << "v size: " << v.size() << std::endl;    //0      
+        std::cout << "v1 size: " << v1.size() << std::endl;    //1
+        std::cout << "v2 size: " << v2.size() << std::endl;    //5 
+        std::cout << "v3 size: " << v3.size() << std::endl;    //5
+        return 0;
+    }   
+    ```
+
+    2. 벡터 출력 [c++](./day36/vector3.cpp) [c++](./day36/iterator.cpp)
+        ```c++
+        for (int i = 0; i < 5; i++) {
+        printf("v2[%d] : %d\t", i, v2[i]);  //v2[0] : 1       v2[1] : 2       v2[2] : 3       v2[3] : 4       v2[4] : 5
+        }
+        printf("\n");
+        for (int i = 0; i < 5; i++) {
+            printf("v3[%d] : %d\t", i, v3[i]);  //v3[0] : 0       v3[1] : 0       v3[2] : 0       v3[3] : 0       v3[4] : 0
+        }
+        
+        std::cout << std::endl;   //범위기반 for문-인덱스를 사용할 수 없다.
+        for (auto i : v2) {
+            std::cout << i << std::endl; //1
+                                        //2
+                                        //3
+                                        //4
+                                        //5
+        }
+
+        for (auto i =0 ; i < v2.size() ; i++) {
+            std::cout << v.at(i) << std::endl; //1
+                                        //2
+                                        //3
+                                        //4
+                                        //5
+        }
+
+        /*
+        vector<int>::iterator는 vector<int> 타입 벡터의 요소를 가리킬 수 있는 반복자입니다.
+    	iter는 이 반복자의 변수 이름입니다.
+
+        v.end()는 벡터의 끝을 가리키는 반복자를 반환합니다. 
+    	끝을 가리키는 반복자는 실제 요소를 가리키지 않지만, 벡터의 마지막 요소 바로 뒤를 가리킵니다.
+	    반복문에서는 이 end()를 사용하여 종료 조건을 설정합니다
+
+        반복자는 포인터처럼 동작하며, *iter는 iter가 가리키는 실제 값을 가져옵니다.
+        */
+       vector<int>::iterator iter;  //순방향 반복자 선언
+    	for (iter = v2.begin(); iter != v2.end(); iter++) {
+    		cout << *iter << endl;
+    	}
+
+
+        //std::vector<int>:: iterator iter;은 순방향 반복자 선언
+        //근데 이놈을 생략하고 auto선언해도 된다.
+        for (auto it = v.begin(); it < v.end(); it++) {
+
+	        std::cout << *it << std::endl;
+        }
+        ```
+
+
+    3. 인덱스 요소 값의 주소 출력 + 요소의 값을 간접참조 연산자로 출력
+        - v.begin()은 벡터의 첫 번째 요소를 가리키는 반복자입니다.(첫번째 요소의 주소)
+        - v.end()는 벡터의 마지막 요소 뒤를 가리키는 반복자입니다.(마지막요소의 다음 주소)
+        - `*v.begin()은 첫 번째 요소의 값을 반환하고, *(v.end() - 1)은 마지막 요소의 값을 반환합니다.`
+        ```c++
+        std::vector<int> v2 = { 1,2,3,4,5 };
+        std::cout << "v2의 첫번째 요소값: " << *v2.begin()<< std::endl;  //v2의 첫번째 요소값: 1
+        std::cout << "v2의 마지막 요소값: " << *(v2.end()-1) << std::endl;   //v2의 마지막 요소값: 5
+        ```
+    4. 벡터의 capacity
+        - 벡터가 메모리를 할당할 수 있는 공간의 크기
+        - 벡터의 크기가 증가할 때, 벡터는 메모리를 재할당하여 용량을 확장할 수 있습니다. 
+        - 벡터가 데이터를 추가할 때 자동으로 확장됩니다. 벡터의 크기가 용량을 초과할 때마다 용량이 증가하게 됩니다.
+        - 용량 확장 전략
+            - 벡터의 용량(capacity)은 보통 두 배씩 증가하지만, 실제로 사용하는 구현체에 따라 조금 더 적은 값으로 증가할 수도 있습니다.
+            - 두 배씩 늘리는 방식 (이는 가장 많이 사용되지만, 구현에 따라 다를 수 있습니다.)
+            - 최소한 크기가 1 증가하는 방식 (일부 구현에서는 비슷한 방식으로 용량을 조금씩 늘릴 수 있습니다.)
+
+    5. 요소값 삽입, 삭제, 조회 push_back () , insert() , pop_back() , erase() , front(),back()
+    ```c++
+    vector<int> v2;
+    v2.push_back(10);    //v.push_back(10) : 마지막원소 뒤에 10을 추가한다.
+    v2.push_back(11);
+    v2.push_back(12);
+    v2.push_back(13);
+    v2.insert(v2.begin(), 1);       //첫번째요소의 위치에 1을 넣는다.
+    v2.insert(find(v2.begin(), v2.end(), 12), 20);   // 12을 찾은 위치 바로 앞에 20을 삽입하기 위함입니다. 
+
+    for (auto i : v2) {
+        cout << i << endl;    //1 10 11 20 12 13
+    }
+
+    v2.pop_back();
+    for (auto i : v2) {
+        cout << i << endl;    //1 10 11 20 12 
+    }
+    ```
+
+    ```c++
+    vector<string> v;
+
+    v.push_back("tiger");
+    v.push_back("lion");
+    v.push_back("elephant");
+    v.push_back("horse");
+
+    cout << v.front() << endl;			//tiger
+    cout << v.back() << endl;			//horse
+
+    vector<string>::iterator iter;
+    for (iter = v.begin(); iter != v.end(); iter++) {
+        if (*iter == "elephant") {
+            v.erase(iter);
+            break;
+        }
+    }
+    for (iter = v.begin(); iter != v.end(); iter++) {
+        cout << *iter << endl;    //tiger lionn horse
+    }
+    ```
+
+    6. 벡터 string
+    ![alt text](image.png)
+    ```c++
+    #include <iostream>
+    #include <vector>
+    using namespace std;
+
+    int main() {
+        vector<char> vec = {'H', 'e', 'l', 'l', 'o', '\0'};  // 수동으로 '\0' 추가
+        cout << &vec[0] << endl;  //   &vec[0]의 주소에서 시작하는 문자열을 출력
+    }
+
+    ```
+    ```c++
+    #include <iostream>
+    #include <string>
+    using namespace std;
+
+    int main() {
+        vector<string> v;
+    
+      	v.push_back("tiger");
+    	v.push_back("lion");
+    	v.push_back("elephant");
+    	v.push_back("horse");
+    }
+    ```
+- 반복자 [c++](./day36/iterator.cpp) [c++](./day36/iterator2.cpp) 
+    - std::vector<int>:: iterator iter;은 순방향 반복자 선언  ,begin()은 처음주소, end()은 마지막 원소의 이후주소
+
+    - std::vector<int>:: reverse_iterator rit;은 역방향 반복자 선언 ,rbegin()은 마지막주소, rend()은 처음 원소의 이전주소
+
+    - auto로 간단하게 사용가능
+
+    ```c++
+    #include <iostream>
+    #include <vector>
+
+    int main() {
+        std::vector <int> v = { 100,200,300,400,500 };
+        
+        std::vector<int>:: iterator iter;
+        for (iter = v.begin(); iter != v.end(); iter++) {
+            std::cout << *iter << std::endl;
+        }
+        
+        for (auto it = v.begin(); it < v.end(); it++) {
+
+            std::cout << *it << std::endl;
+        }
+
+        std::vector<int>::reverse_iterator rit;
+        for (rit = v.rbegin(); rit != v.rend(); rit++) {
+            std::cout << *rit << std::endl;
+        }
+       
+        for (auto rit = v.rbegin(); rit != v.rend(); rit++) {
+		std::cout << *rit << std::endl;
+    	}
+    }
+    ```

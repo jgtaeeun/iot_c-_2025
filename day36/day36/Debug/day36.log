@@ -1,0 +1,3 @@
+﻿  reinterpret_cast.cpp
+C:\Source\iot_c-_2025\day36\reinterpret_cast.cpp(13,9): warning C4477: 'printf' : 서식 문자열 '%u'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'int *'입니다.
+  day36.vcxproj -> C:\Source\iot_c-_2025\day36\Debug\day36.exe

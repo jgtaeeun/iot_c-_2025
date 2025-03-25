@@ -138,6 +138,8 @@
     <ClCompile Include="objpointer4.cpp" />
     <ClCompile Include="objpointer5.cpp" />
     <ClCompile Include="prac_copyconstructor.cpp" />
+    <ClCompile Include="prac_inherit.cpp" />
+    <ClCompile Include="prac_objpointer.cpp" />
     <ClCompile Include="prac_operator.cpp" />
     <ClCompile Include="static_cast.cpp" />
     <ClCompile Include="static_cast2.cpp" />

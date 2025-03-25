@@ -1,12 +1,54 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Source\\iot_c-_2025\\day35\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1513C0D4-8CD7-4FC6-A7F0-D95B04A2FAB4}|day35.vcxproj|C:\\Source\\iot_c-_2025\\day35\\prac_objpointer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1513C0D4-8CD7-4FC6-A7F0-D95B04A2FAB4}|day35.vcxproj|solutionrelative:prac_objpointer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1513C0D4-8CD7-4FC6-A7F0-D95B04A2FAB4}|day35.vcxproj|C:\\Source\\iot_c-_2025\\day35\\prac_inherit.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1513C0D4-8CD7-4FC6-A7F0-D95B04A2FAB4}|day35.vcxproj|solutionrelative:prac_inherit.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "prac_objpointer.cpp",
+              "DocumentMoniker": "C:\\Source\\iot_c-_2025\\day35\\prac_objpointer.cpp",
+              "RelativeDocumentMoniker": "prac_objpointer.cpp",
+              "ToolTip": "C:\\Source\\iot_c-_2025\\day35\\prac_objpointer.cpp",
+              "RelativeToolTip": "prac_objpointer.cpp",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAAEUAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-24T08:52:32.7Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "prac_inherit.cpp",
+              "DocumentMoniker": "C:\\Source\\iot_c-_2025\\day35\\prac_inherit.cpp",
+              "RelativeDocumentMoniker": "prac_inherit.cpp",
+              "ToolTip": "C:\\Source\\iot_c-_2025\\day35\\prac_inherit.cpp",
+              "RelativeToolTip": "prac_inherit.cpp",
+              "ViewState": "AgIAABgAAAAAAAAAAAAxwDQAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-24T08:43:08.358Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

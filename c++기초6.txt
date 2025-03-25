@@ -1,0 +1,70 @@
+0. 동적할당 클래스명 * 포인터변수명 = new 클래스명 {}
+               					     new 클래스명 ()
+		자료형 * 포인터변수명 =	new char []
+							new char
+		
+   동적해제 delete 포인터변수명 	
+		delete [] 포인터변수명 
+
+1-1. 가상소멸자도 가상함수의 일종
+소멸자는 마지막행까지 실행된 후에 실행된다.
+
+1-2. 가상함수가 필요한 이유
+-업캐스팅, 다운캐스팅의 경우, 포인터타입의 멤버에만 접근가능하다.
+
+2. 이동생성자 move
+-기본이동생성자
+- && r-value참조를 매개변수로 받는다.
+
+=======
+1. 형변환 연산자
+
+1-1. static_cast
+업캐스팅   
+Student s;  //기본생성자
+Human* hp = static_cast<Human*> (&s);   //hp는 Human 멤버에만 접근가능
+
+다운캐스팅-주의필요
+Human* hp = new Student{};
+Student* sp = static_cast<Student*> (hp);   // sp는 Student 멤버에만 접근가능
+
+문자리터럴 변환 방법2가지
+const char* c ="hello";
+const char* pc = static_cast<const char*>(c);
+
+std::string  str =c;
+
+
+1-2. dynamic_cast
+업캐스팅   
+Student s;  //기본생성자
+Human* hp = dynamic_cast<Human*> (&s);   //hp는 Human 멤버에만 접근가능
+
+다운캐스팅-주의필요
+Human* hp = new Student{};
+Student* sp =  dynamic_cast<Student*> (hp);   // sp는 Student 멤버에만 접근가능
+
+다운캐스팅실패의 경우, 
+객체의 실제 타입이 부모 클래스 타입이고, 그 부모 클래스 객체를 자식 클래스 타입으로 변환하려고 했기 때문입니다.
+Human* hp = new Human{};
+Student* sp =  dynamic_cast<Student*> (hp);   //nullptr반환
+
+1-3. const_cast
+const로 선언된 변수나 포인터의 상수성 속성을 제거하거나, 반대로 비상수 포인터를 상수 포인터로 변환하는 데 사용될 수 있습니다.
+
+
+const 멤버함수 내에서는 멤버 변수의 값을 변경할 수 없다.
+
+C++ 컴파일러는 const로 선언된 변수는 변경되지 않는다고 가정하고, 해당 변수를 메모리 상에서 최적화할 수 있습니다.
+이 경우, const_cast로 상수성만 제거한 후 값을 변경하려고 하면, 실제 메모리에서 값이 변경되지 않거나, 잘못된 동작을 일으킬 수 있습니다.  
+
+1-4. reinterpret_cast
+포인터->포인터, 포인터->변수, 변수->포인터로 하는 주로 포인터 관련 연산자
+
+2. 이름없는 임시객체
+이름없는 임시객체를 변수에 저장하지 않으면 다음명령실행 시 바로 사라진다.
+이름없는 임시객체는 포인터변수 , 참조할 수 없다. (lvalue가 아니므로)
+
+3. 상수와 리터럴 상수
+상수-상수참조, 포인터변수, 값 변경 불가
+리터럴상수-상수참조, 값 변경 불가

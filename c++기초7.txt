@@ -1,0 +1,18 @@
+스마트 포인터
+unique_ptr - move, 한 객체 
+shared_ptr - 여러객체, 순환참조 주의필요, make_shared
+weak_ptr - 카운터에 포함 안 됨, 순환참조의 해결책
+
+STL
+컨테이너-시퀀스,연관,어댑터
+
+시퀀스컨테이너-벡터
+#include <vector>
+1. 벡터 초기화
+2. 벡터 요소 개수 size()
+3. 벡터 메모리 용량 capacity()
+4. 벡터 출력 4가지 방법
+5. 벡터 insert(), push_back(), pop_back(), erase()
+6. begin(), end() 요소의 주소(포인터변수) 반환
+7. front(), back() 요소반환
+8. iterator출력을 생략하고 간단하게 auto 로 선언

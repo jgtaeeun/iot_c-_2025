@@ -1,0 +1,4 @@
+﻿  DB.cpp
+C:\Program Files\MySQL\MySQL Connector C++ 1.1.12\include\mysql_driver.h(36,10): error C1083: 포함 파일을 열 수 없습니다. 'boost/scoped_ptr.hpp': No such file or directory
+  (소스 파일 'DB.cpp'을(를) 컴파일하는 중)
+  
