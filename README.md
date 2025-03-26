@@ -2614,7 +2614,7 @@ c++
     ```
 
     6. 벡터 string
-    ![alt text](image.png)
+    <img src='./images/vectorstring.png'>
     ```c++
     #include <iostream>
     #include <vector>
@@ -2640,6 +2640,7 @@ c++
     	v.push_back("horse");
     }
     ```
+
 - 반복자 [c++](./day36/iterator.cpp) [c++](./day36/iterator2.cpp) 
     - std::vector<int>:: iterator iter;은 순방향 반복자 선언  ,begin()은 처음주소, end()은 마지막 원소의 이후주소
 
@@ -2676,7 +2677,7 @@ c++
     ```
    
 ## 37일차(3/26)
-- MySQL Connect c++연동
+- MySQL Connect c++연동 [c++](./db/DB2.cpp)[c++](./db/DB3.cpp)
     - Windows (x86, 64-bit), ZIP ArchiveDebug Binaries 설치 &설치경로
 
     - visual studio 빈프로젝트 
@@ -2695,3 +2696,40 @@ c++
         - 프로젝트-속성-vc++디렉터리-라이브러리 디렉터리-줄추가-C:\Program Files (x86)\Windows Kits\10\Lib\<version>\um\x64
         - 프로젝트-속성-vc++디렉터리-라이브러리 디렉터리-줄추가-C:\Program Files (x86)\Microsoft Visual Studio\2019\<버전>\VC\Tools\MSVC\<버전>\lib\x86
         - 프로젝트-속성-vc++디렉터리-라이브러리 디렉터리-줄추가-C:\Program Files (x86)\Windows Kits\10\Lib\<버전>\ucrt\x64
+    ```c++
+    #include <iostream>
+    #include <mysql/jdbc.h>
+
+    using namespace std;
+    using namespace sql;
+    int main() {
+
+        const string server = "tcp://127.0.0.1:3306";
+        const string username = "root";
+        const string  password = "12345";
+        const string database = "madang";
+
+        try {
+            mysql::MySQL_Driver* driver =  mysql::get_mysql_driver_instance();
+            unique_ptr<Connection> conn (driver->connect(server, username, password));
+            conn->setSchema(database);
+            cout << "MySQL Connection success" << endl;
+        }
+        catch (sql::SQLException& e) {
+            cerr << "MySQL Connection failed: " << e.what() << endl;
+        }
+
+        return 0;
+    }
+    ```
+    <img src='./images/mysqlconnetor과c++연동.png'>
+- root계정에서 만든 testDB를 madang사용자에서 사용하도록 권한 주기
+    ```sql
+    -- root 계정에서의 쿼리
+    GRANT ALL PRIVILEGES ON testDB.* TO 'madang'@'%';
+    FLUSH PRIVILEGES;
+
+    -- madang계정에서의 쿼리
+    SHOW GRANTS FOR 'madang'@'%';
+    USE testDB;
+    ```

@@ -5,6 +5,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{A7933E5B-C80B-451F-8B86-334BA937A68C}|db.vcxproj|C:\\Source\\iot_c-_2025\\db\\DB3.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A7933E5B-C80B-451F-8B86-334BA937A68C}|db.vcxproj|solutionrelative:DB3.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7933E5B-C80B-451F-8B86-334BA937A68C}|db.vcxproj|C:\\Source\\iot_c-_2025\\db\\DB2.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A7933E5B-C80B-451F-8B86-334BA937A68C}|db.vcxproj|solutionrelative:DB2.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +18,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DB2.cpp",
+              "DocumentMoniker": "C:\\Source\\iot_c-_2025\\db\\DB2.cpp",
+              "RelativeDocumentMoniker": "DB2.cpp",
+              "ToolTip": "C:\\Source\\iot_c-_2025\\db\\DB2.cpp",
+              "RelativeToolTip": "DB2.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-26T03:32:17.881Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -24,7 +41,7 @@
               "RelativeDocumentMoniker": "DB3.cpp",
               "ToolTip": "C:\\Source\\iot_c-_2025\\db\\DB3.cpp",
               "RelativeToolTip": "DB3.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAAAIAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-03-26T00:35:35.497Z",
               "EditorCaption": ""
