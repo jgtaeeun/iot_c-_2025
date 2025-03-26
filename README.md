@@ -2674,3 +2674,24 @@ c++
     	}
     }
     ```
+   
+## 37일차(3/26)
+- MySQL Connect c++연동
+    - Windows (x86, 64-bit), ZIP ArchiveDebug Binaries 설치 &설치경로
+
+    - visual studio 빈프로젝트 
+        - 프로젝트-속성-vc++디렉터리-포함디렉토리-줄추가- C:\Program Files\MySQL\MySQL Connector C++ 1.1.12\include
+
+        - 프로젝트-속성-vc++디렉터리-라이브러리 디렉터리-줄추가-    C:\Program Files\MySQL\MySQL Connector C++ 1.1.12\lib64\debug\vs14
+
+
+        - 링커-입력-추가종속성-편집-C:\Program Files\MySQL\MySQL Connector C++ 1.1.12\lib\debug\vs14에 있는 mysqlcppcorn.lib찾아  mysqlcppcorn.lib입력
+
+        - visual studio 프로젝터가 있는 폴더에  C:\Program Files\MySQL\MySQL Connector C++ 1.1.12\lib \libcrypto-3-x64.dll ,libssl-3-x64.dll파일 복사 
+
+        - visual studio 프로젝터가 있는 폴더에 C:\Program Files\MySQL\MySQL Connector C++ 1.1.12\lib\debug\vs14\mysqlcppconn-10-vs14.dll파일 복사
+        <img src='./images/프로젝트파일의 파일경로에 3개의 파일.png>
+        
+        - 프로젝트-속성-vc++디렉터리-라이브러리 디렉터리-줄추가-C:\Program Files (x86)\Windows Kits\10\Lib\<version>\um\x64
+        - 프로젝트-속성-vc++디렉터리-라이브러리 디렉터리-줄추가-C:\Program Files (x86)\Microsoft Visual Studio\2019\<버전>\VC\Tools\MSVC\<버전>\lib\x86
+        - 프로젝트-속성-vc++디렉터리-라이브러리 디렉터리-줄추가-C:\Program Files (x86)\Windows Kits\10\Lib\<버전>\ucrt\x64
