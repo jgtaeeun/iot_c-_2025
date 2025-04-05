@@ -1,0 +1,32 @@
+1) 	문자열 포인터의 경우, const
+	문자열 동적할당은 널문자포함위해 +1
+
+
+Product(int i_price, const char* i_id, const char* i_producer) {
+	price = i_price;
+
+	id = new char[strlen(i_id) + 1];
+	strcpy(id, i_id);
+
+	producer = new char[strlen(i_producer) + 1];
+	strcpy(producer, i_producer);
+};
+
+
+
+2) 
+
+friend 키워드
+- private로 선언된 멤버변수를 전역함수에서 접근하려면 friend를 앞에 적고 함수선언을 멤버함수 내에서 해줘야 한다.
+
+연산자오버로딩
+// 출력 연산자 오버로딩
+friend std::ostream& operator<<(std::ostream& out, const Product& p) {
+	out << "price: "  << p.price << " id: "<< p.id << " producer: " << p.producer ;  // 부모 부분 출력
+	return out;
+}
+
+
+======================
+cpp파일제출
+윈도우R -아이피 입력
